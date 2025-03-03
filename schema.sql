@@ -1,5 +1,3 @@
--- SQL script to create the database schema for the Student Enrollment System
-
 CREATE TABLE Students (
     CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
