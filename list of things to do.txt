@@ -1,0 +1,16 @@
+list of things to do:
+
+Student:
+1.)login page
+2.)select your semester page - enrollment updates
+3.)document page
+4.)google form link
+5.)waiting page 
+6.)course list
+
+admin:
+1.)login page
+2.)select your class page
+3.)list of document page - google form link
+4.)enrolment process approval- done
+
