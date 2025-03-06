@@ -3,33 +3,35 @@ CREATE TABLE Students (
 
     StudentID INT PRIMARY KEY AUTO_INCREMENT,
     Name VARCHAR(100) NOT NULL,
-    Email VARCHAR(100) NOT NULL UNIQUE
+    student_address VARCHAR(255),
+    student_phonenumber VARCHAR(15),
+    Mothers_phonenumber VARCHAR(15),
+    Fathers_phonenumber VARCHAR(15),
+    date_of_birth DATE,
+    student_semester INT
 );
 
 CREATE TABLE Courses (
-    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-
     CourseID INT PRIMARY KEY AUTO_INCREMENT,
     CourseName VARCHAR(100) NOT NULL,
-    Credits INT NOT NULL,
-    Prerequisites VARCHAR(255)
+    faculty_id INT,
+    FOREIGN KEY (faculty_id) REFERENCES Faculty(FacultyID)
 );
 
 CREATE TABLE Enrollments (
-    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-
     EnrollmentID INT PRIMARY KEY AUTO_INCREMENT,
     StudentID INT,
-    CourseID INT,
+    enroll_status VARCHAR(50),
     EnrollmentDate DATE,
-    FOREIGN KEY (StudentID) REFERENCES Students(StudentID),
-    FOREIGN KEY (CourseID) REFERENCES Courses(CourseID)
+    FOREIGN KEY (StudentID) REFERENCES Students(StudentID)
 );
 
 CREATE TABLE Faculty (
     FacultyID INT PRIMARY KEY AUTO_INCREMENT,
-    Name VARCHAR(100) NOT NULL,
-    Department VARCHAR(100)
+    Faculty_name VARCHAR(100) NOT NULL,
+    Faculty_phonenumber VARCHAR(15),
+    Faculty_date_of_birth DATE,
+    Faculty_classes VARCHAR(100)
 );
 
 CREATE TABLE Grades (
@@ -43,15 +45,11 @@ CREATE TABLE Grades (
     FOREIGN KEY (CourseID) REFERENCES Courses(CourseID)
 );
 
-CREATE TABLE Timetable (
-    TimetableID INT PRIMARY KEY AUTO_INCREMENT,
-    CourseID INT,
-    ClassTime DATETIME,
-    Location VARCHAR(100),
-    FOREIGN KEY (CourseID) REFERENCES Courses(CourseID)
-);
 
-CREATE TABLE Departments (
-    DepartmentID INT PRIMARY KEY AUTO_INCREMENT,
-    DepartmentName VARCHAR(100) NOT NULL
+
+CREATE TABLE FacultyAdvisor (
+    FA_id INT PRIMARY KEY AUTO_INCREMENT,
+    FA_name VARCHAR(100) NOT NULL,
+    FA_phonenumber VARCHAR(15),
+    FA_class VARCHAR(100)
 );
