@@ -1,0 +1,37 @@
+# SQL Cheat Sheet
+
+## Data Querying
+- **SELECT**: Retrieve data from a database.
+  - Example: `SELECT * FROM table_name;`
+- **WHERE**: Filter records.
+  - Example: `SELECT * FROM table_name WHERE condition;`
+- **JOIN**: Combine rows from two or more tables.
+  - Example: `SELECT columns FROM table1 JOIN table2 ON table1.column = table2.column;`
+
+## Data Manipulation
+- **INSERT**: Add new records.
+  - Example: `INSERT INTO table_name (column1, column2) VALUES (value1, value2);`
+- **UPDATE**: Modify existing records.
+  - Example: `UPDATE table_name SET column1 = value1 WHERE condition;`
+- **DELETE**: Remove records.
+  - Example: `DELETE FROM table_name WHERE condition;`
+
+## Data Definition
+- **CREATE TABLE**: Create a new table.
+  - Example: `CREATE TABLE table_name (column1 datatype, column2 datatype);`
+- **ALTER TABLE**: Modify an existing table.
+  - Example: `ALTER TABLE table_name ADD column_name datatype;`
+- **DROP TABLE**: Delete a table.
+  - Example: `DROP TABLE table_name;`
+
+## Data Control
+- **GRANT**: Give user access privileges.
+  - Example: `GRANT SELECT ON table_name TO user;`
+- **REVOKE**: Remove user access privileges.
+  - Example: `REVOKE SELECT ON table_name FROM user;`
+
+## Transaction Control
+- **COMMIT**: Save changes.
+  - Example: `COMMIT;`
+- **ROLLBACK**: Undo changes.
+  - Example: `ROLLBACK;`
