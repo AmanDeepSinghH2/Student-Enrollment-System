@@ -1,6 +1,8 @@
+CREATE database Enroll;
+USE Enroll;
+
 CREATE TABLE Students (
     CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-
     StudentID INT PRIMARY KEY AUTO_INCREMENT,
     Name VARCHAR(100) NOT NULL,
     student_address VARCHAR(255),
@@ -11,11 +13,19 @@ CREATE TABLE Students (
     student_semester INT
 );
 
+CREATE TABLE Faculty (
+    FacultyID INT PRIMARY KEY AUTO_INCREMENT,
+    FacultyName VARCHAR(100) NOT NULL,
+    FacultyPhoneNumber VARCHAR(15),
+    FacultyDateOfBirth DATE,
+    FacultyClasses VARCHAR(100)
+);
+
 CREATE TABLE Courses (
     CourseID INT PRIMARY KEY AUTO_INCREMENT,
     CourseName VARCHAR(100) NOT NULL,
-    faculty_id INT,
-    FOREIGN KEY (faculty_id) REFERENCES Faculty(FacultyID)
+    FacultyID INT,
+    FOREIGN KEY (FacultyID) REFERENCES Faculty(FacultyID)
 );
 
 CREATE TABLE Enrollments (
@@ -26,17 +36,8 @@ CREATE TABLE Enrollments (
     FOREIGN KEY (StudentID) REFERENCES Students(StudentID)
 );
 
-CREATE TABLE Faculty (
-    FacultyID INT PRIMARY KEY AUTO_INCREMENT,
-    Faculty_name VARCHAR(100) NOT NULL,
-    Faculty_phonenumber VARCHAR(15),
-    Faculty_date_of_birth DATE,
-    Faculty_classes VARCHAR(100)
-);
-
 CREATE TABLE Grades (
     CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-
     GradeID INT PRIMARY KEY AUTO_INCREMENT,
     StudentID INT,
     CourseID INT,
@@ -44,8 +45,6 @@ CREATE TABLE Grades (
     FOREIGN KEY (StudentID) REFERENCES Students(StudentID),
     FOREIGN KEY (CourseID) REFERENCES Courses(CourseID)
 );
-
-
 
 CREATE TABLE FacultyAdvisor (
     FA_id INT PRIMARY KEY AUTO_INCREMENT,
