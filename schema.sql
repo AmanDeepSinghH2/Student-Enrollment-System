@@ -1,4 +1,3 @@
-CREATE database Enroll;
 USE Enroll;
 
 CREATE TABLE Students (
