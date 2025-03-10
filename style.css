@@ -1,0 +1,49 @@
+* {
+    padding: 0px;
+    margin: 0px;
+}
+
+/* Navbar styles */
+.navbar {
+    background-color: darkblue;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 10px;
+    font-size: x-large;
+    color: whitesmoke;
+}
+
+/* Body styles */
+body {
+    background-color: whitesmoke;
+    text-align: center;
+}
+
+/* Message container styles */
+.message-container {
+    background-color: white;
+    border: 5px solid darkslateblue;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 20px auto;
+    width: 80%; /* Adjust width as needed */
+    box-shadow: 0 4px 8px rgb(0, 74, 194);
+}
+
+/* Button styles */
+.button {
+    background-color: darkorange; /* Bootstrap primary color */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 10px; /* Add space between buttons and text */
+}
+
+.button:hover {
+    background-color: #c3d4e7; /* Darker shade for hover effect */
+    color: black;
+}
