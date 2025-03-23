@@ -5,45 +5,102 @@
 
 /* Navbar styles */
 .navbar {
-    background-color: darkblue;
+    background: linear-gradient(to right, #000000, #007B7F); /* Increased black proportion, changed green to darker blue */
+
+
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     padding: 10px;
     font-size: x-large;
-    color: whitesmoke;
+    color: white; /* Changed to white for better contrast */
+    transition: background 0.5s ease; /* Smooth transition for background */
+}
+
+.navbar:hover {
+    background: linear-gradient(to right, #2E7D32, #1B5E20); /* Darker gradient on hover */
 }
 
 /* Body styles */
 body {
-    background-color: whitesmoke;
+    background: linear-gradient(to bottom, #000000, #424242); /* Dark grey gradient */
     text-align: center;
 }
 
 /* Message container styles */
 .message-container {
-    background-color: white;
-    border: 5px solid darkslateblue;
-    border-radius: 10px;
-    padding: 20px;
+    background-color: #007B7F; /* Darker blue background */
+
+
+    border: 5px solid #000000; /* Black border */
+    border-radius: 20px; /* Increased curvature for rounded corners */
+    padding: 40px; /* Increased padding for a larger rectangular shape */
     margin: 20px auto;
-    width: 80%; /* Adjust width as needed */
-    box-shadow: 0 4px 8px rgb(0, 74, 194);
+    width: 60%; /* Adjust width as needed */
+    word-spacing: 5px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5); /* Enhanced shadow for depth */
+    animation: fadeIn 2s ease-in-out; /* Added slide-in animation */
+    transition: box-shadow 0.3s ease; /* Smooth transition for shadow */
+}
+
+.message-container:hover {
+    box-shadow: 0 0 20px rgba(0, 0, 0, 1); /* Glowing effect on hover */
+}
+
+/* Keyframes for slide-in animation */
+@keyframes slideIn {
+    from {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
 }
 
 /* Button styles */
 .button {
-    background-color: darkorange; /* Bootstrap primary color */
-    color: white;
+    background-color: #000000; /* Black background */
+    color: white; /* Changed text color for better contrast */
     border: none;
     padding: 10px 20px;
     border-radius: 10px;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s ease; /* Smooth transitions */
     margin-top: 10px; /* Add space between buttons and text */
 }
 
 .button:hover {
-    background-color: #c3d4e7; /* Darker shade for hover effect */
-    color: black;
+    background-color: #007B7F; /* Darker blue shade for hover effect */
+
+
+    transform: scale(1.05); /* Scale effect on hover */
+    box-shadow: 0 0 15px rgba(255, 179, 0, 1); /* Glowing effect on hover */
+}
+
+/* Footer styles */
+footer {
+    background: linear-gradient(to right, #000000, #007B7F); /* Match navbar with increased black proportion and changed green to darker blue */
+
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 5px 10px; /* Made padding more compact */
+    font-size: xx-small; /* Adjusted font size for compactness */
+    position: fixed; /* or absolute */
+    bottom: 0;
+    width: 100%;
+    color: white; /* Changed to white for better contrast */
+}
+
+/* Additional styles for headings */
+h1 {
+    margin-bottom: 20px; /* Add space below the h1 */
+}
+
+h2 {
+    margin-top: 20px; /* Add space above the h2 */
+    margin-bottom: 20px; /* Add space below the h2 */
 }
