@@ -68,3 +68,15 @@ BEGIN
     INSERT INTO GradeChangeLog (GradeID, OldGrade, NewGrade)
     VALUES (OLD.GradeID, OLD.Grade, NEW.Grade);
 END;
+
+DELIMITER $$
+
+CREATE TRIGGER log_grade_change
+AFTER UPDATE ON Grades
+FOR EACH ROW
+BEGIN
+    INSERT INTO GradeChangeLog (GradeID, OldGrade, NewGrade) 
+    VALUES (OLD.GradeID, OLD.Grade, NEW.Grade);
+END $$
+
+DELIMITER ;
