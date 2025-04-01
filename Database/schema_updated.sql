@@ -80,3 +80,54 @@ BEGIN
 END $$
 
 DELIMITER ;
+DELIMITER $$
+
+CREATE TRIGGER after_insert_students
+AFTER INSERT ON Students
+FOR EACH ROW
+BEGIN
+    INSERT INTO GradeChangeLog (GradeID, OldGrade, NewGrade)
+    VALUES (NULL, NULL, 'New Student Added');
+END $$
+
+CREATE TRIGGER after_insert_faculty
+AFTER INSERT ON Faculty
+FOR EACH ROW
+BEGIN
+    INSERT INTO GradeChangeLog (GradeID, OldGrade, NewGrade)
+    VALUES (NULL, NULL, 'New Faculty Added');
+END $$
+
+CREATE TRIGGER after_insert_courses
+AFTER INSERT ON Courses
+FOR EACH ROW
+BEGIN
+    INSERT INTO GradeChangeLog (GradeID, OldGrade, NewGrade)
+    VALUES (NULL, NULL, 'New Course Added');
+END $$
+
+CREATE TRIGGER after_insert_enrollments
+AFTER INSERT ON Enrollments
+FOR EACH ROW
+BEGIN
+    INSERT INTO GradeChangeLog (GradeID, OldGrade, NewGrade)
+    VALUES (NULL, NULL, 'New Enrollment Added');
+END $$
+
+CREATE TRIGGER after_insert_grades
+AFTER INSERT ON Grades
+FOR EACH ROW
+BEGIN
+    INSERT INTO GradeChangeLog (GradeID, OldGrade, NewGrade)
+    VALUES (NEW.GradeID, NULL, NEW.Grade);
+END $$
+
+CREATE TRIGGER after_insert_facultyadvisor
+AFTER INSERT ON FacultyAdvisor
+FOR EACH ROW
+BEGIN
+    INSERT INTO GradeChangeLog (GradeID, OldGrade, NewGrade)
+    VALUES (NULL, NULL, 'New Faculty Advisor Added');
+END $$
+
+DELIMITER ;
