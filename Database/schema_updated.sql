@@ -29,7 +29,6 @@ CREATE TABLE Courses (
 
 CREATE TABLE Enrollments (
     EnrollmentID INT PRIMARY KEY AUTO_INCREMENT,
-    EnrollmentID INT PRIMARY KEY AUTO_INCREMENT,
     StudentID INT,
     enroll_status VARCHAR(50),
     EnrollmentDate DATE,
@@ -52,3 +51,20 @@ CREATE TABLE FacultyAdvisor (
     FA_phonenumber VARCHAR(15),
     FA_class VARCHAR(100)
 );
+
+CREATE TABLE GradeChangeLog (
+    LogID INT PRIMARY KEY AUTO_INCREMENT,
+    GradeID INT,
+    OldGrade CHAR(2),
+    NewGrade CHAR(2),
+    ChangeDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (GradeID) REFERENCES Grades(GradeID)
+);
+
+CREATE TRIGGER log_grade_change
+AFTER UPDATE ON Grades
+FOR EACH ROW
+BEGIN
+    INSERT INTO GradeChangeLog (GradeID, OldGrade, NewGrade)
+    VALUES (OLD.GradeID, OLD.Grade, NEW.Grade);
+END;
