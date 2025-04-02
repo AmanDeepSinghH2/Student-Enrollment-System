@@ -3,7 +3,7 @@ USE Enroll;
 CREATE TABLE Students (
     CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     StudentID INT PRIMARY KEY AUTO_INCREMENT,
-    Name VARCHAR(100) NOT NULL,
+    Names VARCHAR(100) NOT NULL,
     student_address VARCHAR(255),
     student_phonenumber VARCHAR(15),
     Mothers_phonenumber VARCHAR(15),
@@ -11,6 +11,9 @@ CREATE TABLE Students (
     date_of_birth DATE,
     student_semester INT
 );
+
+INSERT INTO Students (Names, student_address, student_phonenumber, Mothers_phonenumber, Fathers_phonenumber, date_of_birth, student_semester)
+VALUES ('John Doe', '123 Main St', '1234567890', '0987654321', '1122334455', '2000-01-01', 1);
 
 CREATE TABLE Faculty (
     FacultyID INT PRIMARY KEY AUTO_INCREMENT,
@@ -35,99 +38,81 @@ CREATE TABLE Enrollments (
     FOREIGN KEY (StudentID) REFERENCES Students(StudentID)
 );
 
-CREATE TABLE Grades (
-    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    GradeID INT PRIMARY KEY AUTO_INCREMENT,
-    StudentID INT,
-    CourseID INT,
-    Grade CHAR(2),
-    FOREIGN KEY (StudentID) REFERENCES Students(StudentID),
-    FOREIGN KEY (CourseID) REFERENCES Courses(CourseID)
-);
-
-CREATE TABLE FacultyAdvisor (
-    FA_id INT PRIMARY KEY AUTO_INCREMENT,
-    FA_name VARCHAR(100) NOT NULL,
-    FA_phonenumber VARCHAR(15),
-    FA_class VARCHAR(100)
-);
-
-CREATE TABLE GradeChangeLog (
-    LogID INT PRIMARY KEY AUTO_INCREMENT,
-    GradeID INT,
-    OldGrade CHAR(2),
-    NewGrade CHAR(2),
-    ChangeDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (GradeID) REFERENCES Grades(GradeID)
-);
-
-CREATE TRIGGER log_grade_change
-AFTER UPDATE ON Grades
-FOR EACH ROW
-BEGIN
-    INSERT INTO GradeChangeLog (GradeID, OldGrade, NewGrade)
-    VALUES (OLD.GradeID, OLD.Grade, NEW.Grade);
-END;
-
 DELIMITER $$
-
-CREATE TRIGGER log_grade_change
-AFTER UPDATE ON Grades
-FOR EACH ROW
-BEGIN
-    INSERT INTO GradeChangeLog (GradeID, OldGrade, NewGrade) 
-    VALUES (OLD.GradeID, OLD.Grade, NEW.Grade);
-END $$
-
-DELIMITER ;
-DELIMITER $$
-
 CREATE TRIGGER after_insert_students
 AFTER INSERT ON Students
 FOR EACH ROW
 BEGIN
-    INSERT INTO GradeChangeLog (GradeID, OldGrade, NewGrade)
-    VALUES (NULL, NULL, 'New Student Added');
+    INSERT INTO Enrollments (StudentID, enroll_status, EnrollmentDate)
+    VALUES (NEW.StudentID, 'Pending', CURDATE());
 END $$
 
 CREATE TRIGGER after_insert_faculty
 AFTER INSERT ON Faculty
 FOR EACH ROW
 BEGIN
-    INSERT INTO GradeChangeLog (GradeID, OldGrade, NewGrade)
-    VALUES (NULL, NULL, 'New Faculty Added');
+    INSERT INTO Courses (CourseName, FacultyID)
+    VALUES (CONCAT('Default Course for ', NEW.FacultyName), NEW.FacultyID);
 END $$
 
 CREATE TRIGGER after_insert_courses
 AFTER INSERT ON Courses
 FOR EACH ROW
 BEGIN
-    INSERT INTO GradeChangeLog (GradeID, OldGrade, NewGrade)
-    VALUES (NULL, NULL, 'New Course Added');
+    INSERT INTO Enrollments (StudentID, enroll_status, EnrollmentDate)
+    SELECT StudentID, 'Enrolled', CURDATE()
+    FROM Students
+    WHERE student_semester = 1;
 END $$
 
 CREATE TRIGGER after_insert_enrollments
 AFTER INSERT ON Enrollments
 FOR EACH ROW
 BEGIN
-    INSERT INTO GradeChangeLog (GradeID, OldGrade, NewGrade)
-    VALUES (NULL, NULL, 'New Enrollment Added');
+    INSERT INTO Courses (CourseName, FacultyID)
+    SELECT 'General Course', FacultyID
+    FROM Faculty
+    WHERE FacultyID = 1;
 END $$
 
-CREATE TRIGGER after_insert_grades
-AFTER INSERT ON Grades
-FOR EACH ROW
-BEGIN
-    INSERT INTO GradeChangeLog (GradeID, OldGrade, NewGrade)
-    VALUES (NEW.GradeID, NULL, NEW.Grade);
-END $$
+DELIMITER ;
 
-CREATE TRIGGER after_insert_facultyadvisor
-AFTER INSERT ON FacultyAdvisor
-FOR EACH ROW
+DELIMITER $$
+
+
+CREATE PROCEDURE GetStudentEnrollments(IN student_id INT)
 BEGIN
-    INSERT INTO GradeChangeLog (GradeID, OldGrade, NewGrade)
-    VALUES (NULL, NULL, 'New Faculty Advisor Added');
+    -- Declare a variable to signal the end of the cursor
+    DECLARE done INT DEFAULT 0;
+
+    -- Declare variables to hold the data fetched from the cursor
+    DECLARE enrollment_id INT;
+    DECLARE course_name VARCHAR(100);
+
+    -- Define a cursor to select enrollment ID and course name for the given student ID
+    DECLARE cur CURSOR FOR 
+        SELECT Enrollments.EnrollmentID, Courses.CourseName
+        FROM Enrollments
+        JOIN Courses ON Enrollments.StudentID = student_id AND Courses.FacultyID IS NOT NULL;
+
+    -- Define a handler to set the 'done' variable when the cursor reaches the end
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
+
+    -- Open the cursor
+    OPEN cur;
+
+    -- Loop to fetch and process each row from the cursor
+    read_loop: LOOP
+        FETCH cur INTO enrollment_id, course_name; -- Fetch the next row into variables
+        IF done THEN
+            LEAVE read_loop; -- Exit the loop if no more rows are available
+        END IF;
+        -- Process each row (example: output the enrollment ID and course name)
+        SELECT enrollment_id, course_name;
+    END LOOP;
+
+    -- Close the cursor after processing all rows
+    CLOSE cur;
 END $$
 
 DELIMITER ;
