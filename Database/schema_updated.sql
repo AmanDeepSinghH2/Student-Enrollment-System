@@ -166,3 +166,14 @@ FROM
     Enrollments
 JOIN 
     Students ON Enrollments.StudentID = Students.StudentID;
+
+CREATE VIEW CourseDetails AS
+    SELECT 
+        Courses.CourseID,
+        Courses.CourseName,
+        Faculty.FacultyName,
+        Faculty.FacultyPhoneNumber
+    FROM 
+        Courses
+    JOIN 
+        Faculty ON Courses.FacultyID = Faculty.FacultyID;
