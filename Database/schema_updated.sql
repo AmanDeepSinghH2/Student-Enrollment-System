@@ -12,8 +12,6 @@ CREATE TABLE Students (
     student_semester INT
 );
 
-INSERT INTO Students (Names, student_address, student_phonenumber, Mothers_phonenumber, Fathers_phonenumber, date_of_birth, student_semester)
-VALUES ('John Doe', '123 Main St', '1234567890', '0987654321', '1122334455', '2000-01-01', 1);
 
 CREATE TABLE Faculty (
     FacultyID INT PRIMARY KEY AUTO_INCREMENT,
@@ -143,19 +141,6 @@ END $$
 
 DELIMITER ;
 
-INSERT INTO Students (Names, student_address, student_phonenumber, Mothers_phonenumber, Fathers_phonenumber, date_of_birth, student_semester)
-VALUES 
-('Alice Smith', '456 Elm St', '2345678901', '1234567890', '2233445566', '2001-02-15', 2),
-('Bob Johnson', '789 Oak St', '3456789012', '2345678901', '3344556677', '2002-03-20', 3),
-('Charlie Brown', '101 Pine St', '4567890123', '3456789012', '4455667788', '2003-04-25', 4),
-('Diana Prince', '202 Maple St', '5678901234', '4567890123', '5566778899', '2004-05-30', 1),
-('Eve Adams', '303 Birch St', '6789012345', '5678901234', '6677889900', '2005-06-10', 2),
-('Frank Castle', '404 Cedar St', '7890123456', '6789012345', '7788990011', '2006-07-15', 3),
-('Grace Hopper', '505 Walnut St', '8901234567', '7890123456', '8899001122', '2007-08-20', 4),
-('Hank Pym', '606 Chestnut St', '9012345678', '8901234567', '9900112233', '2008-09-25', 1),
-('Ivy League', '707 Ash St', '0123456789', '9012345678', '0011223344', '2009-10-30', 2),
-('Jack Sparrow', '808 Willow St', '1234567890', '0123456789', '1122334455', '2010-11-05', 3);
-
 CREATE VIEW EnrollmentDetails AS
 SELECT 
     Enrollments.EnrollmentID,
@@ -177,3 +162,30 @@ CREATE VIEW CourseDetails AS
         Courses
     JOIN 
         Faculty ON Courses.FacultyID = Faculty.FacultyID;
+
+-- Continue from your schema
+CREATE TABLE IF NOT EXISTS Grades (
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    GradeID INT PRIMARY KEY AUTO_INCREMENT,
+    StudentID INT NOT NULL,
+    CourseID INT NOT NULL,
+    Grade VARCHAR(2) NOT NULL CHECK (Grade IN ('A+', 'A', 'B+', 'B', 'C+', 'C', 'D', 'F')),
+    GradeDate DATE,
+    FOREIGN KEY (StudentID) REFERENCES Students(StudentID),
+    FOREIGN KEY (CourseID) REFERENCES Courses(CourseID),
+    UNIQUE KEY unique_grade (StudentID, CourseID)
+);
+
+
+INSERT INTO Students (Names, student_address, student_phonenumber, Mothers_phonenumber, Fathers_phonenumber, date_of_birth, student_semester)
+VALUES 
+('Alice Smith', '456 Elm St', '2345678901', '1234567890', '2233445566', '2001-02-15', 2),
+('Bob Johnson', '789 Oak St', '3456789012', '2345678901', '3344556677', '2002-03-20', 3),
+('Charlie Brown', '101 Pine St', '4567890123', '3456789012', '4455667788', '2003-04-25', 4),
+('Diana Prince', '202 Maple St', '5678901234', '4567890123', '5566778899', '2004-05-30', 1),
+('Eve Adams', '303 Birch St', '6789012345', '5678901234', '6677889900', '2005-06-10', 2),
+('Frank Castle', '404 Cedar St', '7890123456', '6789012345', '7788990011', '2006-07-15', 3),
+('Grace Hopper', '505 Walnut St', '8901234567', '7890123456', '8899001122', '2007-08-20', 4),
+('Hank Pym', '606 Chestnut St', '9012345678', '8901234567', '9900112233', '2008-09-25', 1),
+('Ivy League', '707 Ash St', '0123456789', '9012345678', '0011223344', '2009-10-30', 2),
+('Jack Sparrow', '808 Willow St', '1234567890', '0123456789', '1122334455', '2010-11-05', 3);
