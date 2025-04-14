@@ -1,12 +1,15 @@
-console.log("auth.js loaded successfully");
+console.log("auth_debug_v4.js loaded successfully");
 
 function handleLogin(event) {
-    console.log("handleLogin function called");
+    console.log("handleLogin function called - v4"); // Added version identifier
     try {
         if (!event) {
             console.error("No event object received");
             return;
         }
+        
+        console.log("Event type:", event.type); // Log event type
+        console.log("Event target:", event.target); // Log event target
         
         event.preventDefault();
         console.log("Default form submission prevented");

@@ -1,4 +1,4 @@
-console.log("auth.js loaded successfully");
+console.log("auth_debug_v2.js loaded successfully");
 
 function handleLogin(event) {
     console.log("handleLogin function called");
