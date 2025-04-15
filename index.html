@@ -1,72 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" type="text/css" href="style.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" type="text/css" href="style.css" />
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             console.log("DOM fully loaded");
-            
+
             // First verify forms exist before setting up listeners
             const studentForm = document.getElementById('studentLoginForm');
             const facultyForm = document.getElementById('facultyLoginForm');
-            
+
             if (!studentForm) console.error("Student login form not found");
             if (!facultyForm) console.error("Faculty login form not found");
 
             // Load auth.js immediately
             const script = document.createElement('script');
             script.src = 'auth_debug_v4.js';
-            
-            script.onload = function() {
+
+            script.onload = function () {
                 console.log("auth_debug_v4.js loaded successfully");
-                
+
                 // Verify forms are accessible
                 console.log("Student form exists:", !!studentForm);
                 console.log("Faculty form exists:", !!facultyForm);
-                
+
                 // Setup form event listeners
                 function setupFormListeners() {
                     try {
                         if (studentForm) {
-                            studentForm.addEventListener('submit', function(e) {
+                            studentForm.addEventListener('submit', function (e) {
                                 console.log("Student form submit event triggered");
                                 e.preventDefault();
                                 console.log("Calling handleLogin...");
                                 handleLogin(e);
                             });
-                            
+
                             // Add direct click listener to submit button as fallback
                             // Verify form elements exist
                             console.log("Student username input:", studentForm.querySelector('#studentUsername'));
                             console.log("Student password input:", studentForm.querySelector('#studentPassword'));
-                            
+
                             const studentSubmitBtn = studentForm.querySelector('button[type="submit"]');
                             console.log("Student submit button element:", studentSubmitBtn);
                             console.log("Student submit button found:", !!studentSubmitBtn);
-                            
+
                             if (studentSubmitBtn) {
                                 console.log("Adding click listener to student submit button");
-                                const clickHandler = function(e) {
+                                const clickHandler = function (e) {
                                     console.log("Student submit button clicked - event:", e);
                                     console.log("Form elements:", {
                                         username: studentForm.querySelector('#studentUsername')?.value,
-                                        password: studentForm.querySelector('#studentPassword')?.value
+                                        password: studentForm.querySelector('#studentPassword')?.value,
                                     });
                                     e.preventDefault();
                                     console.log("Calling handleLogin with form target");
-                                    handleLogin({target: studentForm});
+                                    handleLogin({ target: studentForm });
                                 };
                                 studentSubmitBtn.addEventListener('click', clickHandler);
                                 console.log("Click listener added to submit button");
                             } else {
                                 console.error("Student submit button not found in form");
                             }
-                            
+
                             // Add form submit listener
-                            const submitHandler = function(e) {
+                            const submitHandler = function (e) {
                                 console.log("Form submit event triggered");
                                 e.preventDefault();
                                 console.log("Calling handleLogin from form submit");
@@ -76,44 +76,30 @@
                             console.log("Submit listener added to form");
                             console.log("Student form listener added");
                         }
-                        
+
                         if (facultyForm) {
-                            facultyForm.addEventListener('submit', function(e) {
+                            facultyForm.addEventListener('submit', function (e) {
                                 console.log("Faculty form submit event triggered");
                                 e.preventDefault();
                                 console.log("Calling handleLogin...");
                                 handleLogin(e);
                             });
-                            
+
                             // Add direct click listener to submit button as fallback
                             const facultySubmitBtn = facultyForm.querySelector('button[type="submit"]');
                             console.log("Faculty submit button found:", !!facultySubmitBtn);
                             if (facultySubmitBtn) {
-                                facultySubmitBtn.addEventListener('click', function(e) {
+                                facultySubmitBtn.addEventListener('click', function (e) {
                                     console.log("Faculty submit button clicked");
                                     console.log("Form elements:", {
                                         username: facultyForm.querySelector('#facultyUsername').value,
-                                        password: facultyForm.querySelector('#facultyPassword').value
+                                        password: facultyForm.querySelector('#facultyPassword').value,
                                     });
                                     e.preventDefault();
-                                    handleLogin({target: facultyForm});
+                                    handleLogin({ target: facultyForm });
                                 });
                             }
                             console.log("Faculty form listener added");
-                        }
-
-                        // Setup Google login buttons
-                        const studentGoogleBtn = document.getElementById('studentGoogleLogin');
-                        const facultyGoogleBtn = document.getElementById('facultyGoogleLogin');
-                        
-                        if (studentGoogleBtn) {
-                            studentGoogleBtn.onclick = handleGoogleLogin;
-                            console.log("Student Google button listener added");
-                        }
-                        
-                        if (facultyGoogleBtn) {
-                            facultyGoogleBtn.onclick = handleGoogleLogin;
-                            console.log("Faculty Google button listener added");
                         }
                     } catch (error) {
                         console.error("Error setting up event listeners:", error);
@@ -123,11 +109,11 @@
                 // Call setup immediately
                 setupFormListeners();
             };
-            
-            script.onerror = function() {
+
+            script.onerror = function () {
                 console.error("Failed to load auth_debug_v4.js");
             };
-            
+
             document.head.appendChild(script);
         });
     </script>
@@ -153,23 +139,21 @@
                     To proceed with the enrollment, select from the two options below:
                 </h1>
                 <form class="login-form" id="studentLoginForm" style="display:none;">
-                    <input type="text" id="studentUsername" placeholder="Student ID" required>
-                    <input type="password" id="studentPassword" placeholder="Password" required>
+                    <input type="text" id="studentUsername" placeholder="Student ID" required />
+                    <input type="password" id="studentPassword" placeholder="Password" required />
                     <button type="submit" class="button">Submit</button>
-                    <button type="button" class="button" id="studentGoogleLogin">Login with Google</button>
                     <button type="button" class="button" onclick="window.location.href='student_login.html'">Advanced Login</button>
                 </form>
                 <form class="login-form" id="facultyLoginForm" style="display:none;">
-                    <input type="text" id="facultyUsername" placeholder="Faculty ID" required>
-                    <input type="password" id="facultyPassword" placeholder="Password" required>
+                    <input type="text" id="facultyUsername" placeholder="Faculty ID" required />
+                    <input type="password" id="facultyPassword" placeholder="Password" required />
                     <button type="submit" class="button">Submit</button>
-                    <button type="button" class="button" id="facultyGoogleLogin">Login with Google</button>
                     <button type="button" class="button" onclick="window.location.href='faculty_login.html'">Advanced Login</button>
                 </form>
                 <button class="button" id="studentLoginBtn" onclick="document.getElementById('studentLoginForm').style.display='block'">Login (for students)</button>
                 <button class="button" id="facultyLoginBtn" onclick="document.getElementById('facultyLoginForm').style.display='block'">Login (for Faculty advisor)</button>
                 <h2>
-                    We are excited to assist you in your enrollment journey! 
+                    We are excited to assist you in your enrollment journey!
                     Our platform is designed to provide you with all the necessary tools and information to make your enrollment process smooth and efficient.
                 </h2>
             </div>
