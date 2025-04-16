@@ -4,50 +4,50 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <link rel="stylesheet" type="text/css" href="style.css" />
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.2.4/dist/tailwind.min.css" rel="stylesheet">
     <title>Welcome To EnrollmentPRO</title>
 </head>
-<body>
+<body class="bg-gradient-to-b from-black to-gray-600 text-center">
     <article name="a1">
-        <div class="container">
-            <nav class="navbar">
+        <div class="container mx-auto">
+            <nav class="flex justify-between items-center bg-gradient-to-r from-black to-teal-700 p-4 text-white">
                 <header class="header">
-                    <h1 onclick="window.location.href='index.html'">EnrollmentPRO</h1>
+                    <h1 onclick="window.location.href='index.html'" class="text-3xl cursor-pointer">EnrollmentPRO</h1>
                 </header>
                 <div class="b1">
-                    <button class="button" href="index.html">Home</button>
-                    <button class="button">About Us</button>
-                    <button class="button">Info</button>
+                    <button class="bg-black text-white py-2 px-4 rounded hover:bg-teal-700">Home</button>
+                    <button class="bg-black text-white py-2 px-4 rounded hover:bg-teal-700">About Us</button>
+                    <button class="bg-black text-white py-2 px-4 rounded hover:bg-teal-700">Info</button>
                 </div>
             </nav>
-            <div class="message-container">
-                <h1>
+            <div class="bg-teal-700 border-4 border-black rounded-lg p-10 my-5 w-3/5 mx-auto shadow-lg transition-shadow duration-300 hover:shadow-xl">
+                <h1 class="mb-5">
                     Greetings, this is the enrollment website for SRMIST students!
                     This platform enables students to virtually complete their enrollment in a seamless manner.
                     To proceed with the enrollment, select from the two options below:
                 </h1>
                 <form class="login-form" id="studentLoginForm" style="display:none;">
-                    <input type="text" id="studentUsername" placeholder="Student ID" required />
-                    <input type="password" id="studentPassword" placeholder="Password" required />
-                    <button type="submit" class="button">Submit</button>
-                    <button type="button" class="button" onclick="window.location.href='student_login.html'">Advanced Login</button>
+                    <input type="text" id="studentUsername" placeholder="Student ID" required class="border rounded p-2 mb-2" />
+                    <input type="password" id="studentPassword" placeholder="Password" required class="border rounded p-2 mb-2" />
+                    <button type="submit" class="bg-black text-white py-2 px-4 rounded">Submit</button>
+                    <button type="button" class="bg-black text-white py-2 px-4 rounded" onclick="window.location.href='student_login.html'">Advanced Login</button>
                 </form>
                 <form class="login-form" id="facultyLoginForm" style="display:none;">
-                    <input type="text" id="facultyUsername" placeholder="Faculty ID" required />
-                    <input type="password" id="facultyPassword" placeholder="Password" required />
-                    <button type="submit" class="button">Submit</button>
-                    <button type="button" class="button" onclick="window.location.href='faculty_login.html'">Advanced Login</button>
+                    <input type="text" id="facultyUsername" placeholder="Faculty ID" required class="border rounded p-2 mb-2" />
+                    <input type="password" id="facultyPassword" placeholder="Password" required class="border rounded p-2 mb-2" />
+                    <button type="submit" class="bg-black text-white py-2 px-4 rounded">Submit</button>
+                    <button type="button" class="bg-black text-white py-2 px-4 rounded" onclick="window.location.href='faculty_login.html'">Advanced Login</button>
                 </form>
-                <button class="button" id="studentLoginBtn" onclick="document.getElementById('studentLoginForm').style.display='block'">Login (for students)</button>
-                <button class="button" id="facultyLoginBtn" onclick="document.getElementById('facultyLoginForm').style.display='block'">Login (for Faculty advisor)</button>
-                <h2>
+                <button class="bg-black text-white py-2 px-4 rounded" id="studentLoginBtn" onclick="document.getElementById('studentLoginForm').style.display='block'">Login (for students)</button>
+                <button class="bg-black text-white py-2 px-4 rounded" id="facultyLoginBtn" onclick="document.getElementById('facultyLoginForm').style.display='block'">Login (for Faculty advisor)</button>
+                <h2 class="mt-5 mb-5">
                     We are excited to assist you in your enrollment journey!
                     Our platform is designed to provide you with all the necessary tools and information to make your enrollment process smooth and efficient.
                 </h2>
             </div>
         </div>
-        <footer>
-            <h2>
+        <footer class="flex justify-between items-center bg-gradient-to-r from-black to-teal-700 p-2 text-white fixed bottom-0 w-full">
+            <h2 class="text-xs">
                 Feel free to explore the various resources available to you, including FAQs and support services.
             </h2>
         </footer>
