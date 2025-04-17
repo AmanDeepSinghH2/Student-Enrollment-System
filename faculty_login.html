@@ -9,7 +9,15 @@
     
     <title>Faculty Login</title>
 </head>
-<body>
+<body  style="background-color: rgb(11, 12, 14);">
+    <div class="navbar" style="border-radius: 0px; padding: 10px; background-color: #333; color: white; display: flex; justify-content: flex-end;">
+        <button onclick="window.location.href='BIndex.html'" style="background-color: #555; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin-right: 10px;">
+            Home
+        </button>
+        <button onclick="window.location.href='student_login.html'" style="background-color: #555; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">
+            Student Login
+        </button>
+    </div>
     <div class="container">
         <header class="main header clarifx">
             <h1>Faculty Login</h1>
@@ -20,8 +28,7 @@
             <label for="password">Password:</label>
             <input type="password" id="password" name="password" required>
             <button type="submit">Login</button>
-            <button class="home-button" onclick="window.location.href='index.html'">Home</button>
-            <button class="forgot-password-button" onclick="window.location.href='#'">Forgot Password?</button>
+            <p><a href='#'>Forgot Password?</a></p>
         </form>
 
     </div>

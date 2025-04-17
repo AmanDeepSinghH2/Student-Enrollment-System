@@ -9,11 +9,18 @@
     
     <title>Student Login</title>
 </head>
-<body>
+<body style="background-color: rgb(11, 12, 14);">
+    <nav class="navbar" style="border-radius: 0px; padding: 10px; background-color: #333; color: white; display: flex; justify-content: flex-end;">
+        <button onclick="window.location.href='BIndex.html'" style="background-color: #555; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin-right: 10px;">
+            Home
+        </button>
+        <button onclick="window.location.href='faculty_login.html'" style="background-color: #555; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">
+            Faculty Login
+        </button>
+    </nav>
     <div class="container">
         <header class="main header clarifx">
             <h1>Student Login</h1>
-            <button onclick="window.location.href='index.html'">Home</button>
         </header>
         <form onsubmit="handleLogin(event)">
             <label for="username">Username:</label>

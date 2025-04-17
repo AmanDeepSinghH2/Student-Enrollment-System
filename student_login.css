@@ -3,6 +3,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    
 }
 
 /* Body Styles */
@@ -53,14 +54,14 @@ button {
 
 /* Button Hover Effects */
 button:hover {
-    background: olive; /* Olive color on hover */
+    background:rgb(0, 56, 146); /* Olive color on hover */
     color: white;
     transform: scale(1.05);
 }
 
 /* Link Styles */
 a {
-    color: olive; /* Olive color for links */
+    color: rgb(241, 0, 44); /* Olive color for links */
     text-decoration: none;
 }
 
