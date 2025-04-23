@@ -1,0 +1,93 @@
+<html lang="en">
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1" name="viewport"/>
+  <title>
+   The Helper Student Login
+  </title>
+  <script src="https://cdn.tailwindcss.com">
+  </script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+  <style>
+   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@600;700&display=swap');
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+  </style>
+ </head>
+ <body class="bg-[#0f042d] min-h-screen flex flex-col">
+  <!-- Navbar -->
+  <nav class="flex justify-between items-center px-6 py-3 bg-gradient-to-r from-[#9c27b0] to-[#ff1a66]">
+   <div class="text-white font-extrabold text-lg select-none flex items-center gap-1">
+    THE HELPER
+    <span>
+     ♥
+    </span>
+   </div>
+   <ul class="flex gap-4">
+    <li>
+     <a class="bg-[#ff1a66] px-4 py-2 rounded-full font-extrabold text-white text-sm hover:brightness-110 transition" href="#">
+      Home
+     </a>
+    </li>
+    <li>
+     <a class="bg-[#ff1a66] px-4 py-2 rounded-full font-extrabold text-white text-sm hover:brightness-110 transition" href="#">
+      Developer
+     </a>
+    </li>
+    <li>
+     <a class="bg-[#ff1a66] px-4 py-2 rounded-full font-extrabold text-white text-sm hover:brightness-110 transition" href="#">
+      Contribute
+     </a>
+    </li>
+   </ul>
+  </nav>
+  <!-- Main Content -->
+  <main class="flex-grow flex justify-center items-center px-4">
+   <section class="w-full max-w-md bg-[#2e0e5a]/70 border border-[#9c27b0] rounded-md p-8 flex flex-col items-center">
+    <h1 class="text-[#ff1a66] font-extrabold text-xl mb-6 select-none">
+     Student Login
+    </h1>
+    <form class="w-full flex flex-col gap-5" action="#" method="POST" autocomplete="off">
+     <label class="flex flex-col text-white font-semibold text-sm" for="studentId">
+      Student ID
+      <input class="mt-1 rounded-md px-3 py-2 bg-[#d600ff] bg-opacity-20 border border-[#d600ff] text-white font-semibold placeholder:text-[#ff1a66] focus:outline-none focus:ring-2 focus:ring-[#d600ff]" id="studentId" name="studentId" placeholder="Enter your student ID" required="" type="text"/>
+     </label>
+     <label class="flex flex-col text-white font-semibold text-sm" for="password">
+      Password
+      <input class="mt-1 rounded-md px-3 py-2 bg-[#d600ff] bg-opacity-20 border border-[#d600ff] text-white font-semibold placeholder:text-[#ff1a66] focus:outline-none focus:ring-2 focus:ring-[#d600ff]" id="password" name="password" placeholder="Enter your password" required="" type="password"/>
+     </label>
+     <button class="bg-[#d600ff] font-extrabold text-white rounded-md py-2 shadow-[0_0_10px_#d600ff] hover:brightness-110 transition" type="submit">
+      Login
+     </button>
+    </form>
+    <button class="mt-8 bg-[#374151] text-white font-extrabold text-xs rounded-full px-4 py-1 select-none hover:bg-[#4b5563] transition">
+     Back to Home
+    </button>
+   </section>
+  </main>
+  <!-- Footer -->
+  <footer class="bg-[#6f1ab6] text-white select-none relative">
+   <div class="max-w-7xl mx-auto px-6 py-4 flex flex-col sm:flex-row justify-between items-center gap-2">
+    <p class="italic text-xs text-[#ff1a66] text-center sm:text-left select-text">
+     "Made for SRM, made by SRMITE
+     <span>
+      🎀
+     </span>
+     "
+    </p>
+    <div class="text-sm font-semibold flex gap-2 justify-center sm:justify-start">
+     <span>
+      Join Our Whatsapp Community
+     </span>
+     <span>
+      Want To Be A Contributor?
+     </span>
+    </div>
+   </div>
+   <button aria-label="Confused emoji button" class="absolute bottom-4 right-4 w-10 h-10 rounded-full bg-gradient-to-tr from-[#ff1a66] to-[#ff4d4d] flex justify-center items-center shadow-lg" type="button">
+    <img alt="Emoji face with raised eyebrow and hand on chin, representing confusion or thinking" decoding="async" height="24" loading="lazy" src="https://storage.googleapis.com/a1aa/image/9a6210bb-2809-42d4-c1bd-c64489c29632.jpg" width="24"/>
+   </button>
+  </footer>
+ </body>
+</html>
