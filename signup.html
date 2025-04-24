@@ -17,13 +17,23 @@
   <div class="flex justify-center items-center h-screen bg-white shadow-lg p-10 mx-auto my-10 rounded-lg">
     <div class="w-2/3">
       <h2 class="text-2xl font-bold mb-6">Create Your Profile</h2>
-      <form action="#" method="POST">
+      <form id="signupForm">
         <div class="mb-4">
           <label for="userType" class="block text-left text-lg font-medium">Are you a student or faculty?</label>
           <select id="userType" name="userType" class="w-full p-2 rounded-md border-gray-300">
             <option value="student">Student</option>
             <option value="faculty">Faculty</option>
           </select>
+        </div>
+
+        <div class="mb-4">
+          <label for="username" class="block text-left text-lg font-medium">Username</label>
+          <input type="text" id="username" name="username" class="w-full p-2 rounded-md border-gray-300" required />
+        </div>
+
+        <div class="mb-4">
+          <label for="password" class="block text-left text-lg font-medium">Password</label>
+          <input type="password" id="password" name="password" class="w-full p-2 rounded-md border-gray-300" required />
         </div>
 
         <!-- Student Sign Up -->
@@ -55,6 +65,66 @@
 
         <button type="submit" class="bg-teal-600 text-white py-2 px-4 rounded hover:bg-teal-500 mt-4">Sign Up</button>
       </form>
+
+      <div id="message" class="mt-4 text-red-600 font-semibold"></div>
+
+      <script>
+        const userType = document.getElementById("userType");
+        const studentForm = document.getElementById("studentForm");
+        const facultyForm = document.getElementById("facultyForm");
+        const signupForm = document.getElementById("signupForm");
+        const messageDiv = document.getElementById("message");
+
+        userType.addEventListener("change", function () {
+          if (this.value === "student") {
+            studentForm.style.display = "block";
+            facultyForm.style.display = "none";
+          } else {
+            studentForm.style.display = "none";
+            facultyForm.style.display = "block";
+          }
+        });
+
+        signupForm.addEventListener("submit", async (e) => {
+          e.preventDefault();
+          messageDiv.textContent = "";
+
+          const username = signupForm.username.value.trim();
+          const password = signupForm.password.value;
+          const role = userType.value;
+
+          if (username.length < 3 || password.length < 6) {
+            messageDiv.textContent = "Username must be at least 3 characters and password at least 6 characters.";
+            return;
+          }
+
+          try {
+            const response = await fetch("backend/signup.php", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ username, password, role }),
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+              messageDiv.style.color = "green";
+              messageDiv.textContent = result.message;
+              signupForm.reset();
+              studentForm.style.display = "block";
+              facultyForm.style.display = "none";
+            } else {
+              messageDiv.style.color = "red";
+              messageDiv.textContent = result.error || "Sign up failed";
+            }
+          } catch (error) {
+            messageDiv.style.color = "red";
+            messageDiv.textContent = "Error connecting to server";
+          }
+        });
+      </script>
     </div>
   </div>
 
@@ -64,19 +134,7 @@
   </footer>
 
   <script>
-    const userType = document.getElementById("userType");
-    const studentForm = document.getElementById("studentForm");
-    const facultyForm = document.getElementById("facultyForm");
-
-    userType.addEventListener("change", function () {
-      if (this.value === "student") {
-        studentForm.style.display = "block";
-        facultyForm.style.display = "none";
-      } else {
-        studentForm.style.display = "none";
-        facultyForm.style.display = "block";
-      }
-    });
+    // Remove duplicate declarations and event listeners
   </script>
 
 </body>
