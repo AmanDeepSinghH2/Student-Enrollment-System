@@ -42,25 +42,25 @@
           <input type="text" id="registrationNumber" name="registrationNumber" class="w-full p-2 rounded-md border-gray-300" required />
           
           <label for="batch" class="block text-left text-lg font-medium">Batch (1 or 2)</label>
-          <input type="text" id="batch" name="batch" class="w-full p-2 rounded-md border-gray-300" required />
+          <input type="text" id="batch" name="batch" class="w-full p-2 rounded-md border-gray-300" />
           
           <label for="class" class="block text-left text-lg font-medium">Class</label>
-          <input type="text" id="class" name="class" class="w-full p-2 rounded-md border-gray-300" required />
+          <input type="text" id="class" name="class" class="w-full p-2 rounded-md border-gray-300" />
         </div>
 
         <!-- Faculty Sign Up -->
         <div id="facultyForm" class="mb-4 hidden">
           <label for="facultyId" class="block text-left text-lg font-medium">Faculty ID</label>
-          <input type="text" id="facultyId" name="facultyId" class="w-full p-2 rounded-md border-gray-300" required />
+          <input type="text" id="facultyId" name="facultyId" class="w-full p-2 rounded-md border-gray-300" />
           
           <label for="facultyName" class="block text-left text-lg font-medium">Faculty Name</label>
-          <input type="text" id="facultyName" name="facultyName" class="w-full p-2 rounded-md border-gray-300" required />
+          <input type="text" id="facultyName" name="facultyName" class="w-full p-2 rounded-md border-gray-300" />
           
-          <label for="batch" class="block text-left text-lg font-medium">Batch (1 or 2)</label>
-          <input type="text" id="batch" name="batch" class="w-full p-2 rounded-md border-gray-300" required />
+          <label for="facultyBatch" class="block text-left text-lg font-medium">Batch (1 or 2)</label>
+          <input type="text" id="facultyBatch" name="facultyBatch" class="w-full p-2 rounded-md border-gray-300" />
           
-          <label for="class" class="block text-left text-lg font-medium">Class</label>
-          <input type="text" id="class" name="class" class="w-full p-2 rounded-md border-gray-300" required />
+          <label for="facultyClass" class="block text-left text-lg font-medium">Class</label>
+          <input type="text" id="facultyClass" name="facultyClass" class="w-full p-2 rounded-md border-gray-300" />
         </div>
 
         <button type="submit" class="bg-teal-600 text-white py-2 px-4 rounded hover:bg-teal-500 mt-4">Sign Up</button>
@@ -93,6 +93,23 @@
           const password = signupForm.password.value;
           const role = userType.value;
 
+          // Collect additional fields based on role
+          let extraData = {};
+          if (role === "student") {
+            extraData = {
+              registrationNumber: signupForm.registrationNumber.value.trim(),
+              batch: signupForm.batch.value.trim(),
+              class: signupForm.class.value.trim(),
+            };
+          } else if (role === "faculty") {
+            extraData = {
+              facultyId: signupForm.facultyId.value.trim(),
+              facultyName: signupForm.facultyName.value.trim(),
+              batch: signupForm.facultyBatch.value.trim(),
+              class: signupForm.facultyClass.value.trim(),
+            };
+          }
+
           if (username.length < 3 || password.length < 6) {
             messageDiv.textContent = "Username must be at least 3 characters and password at least 6 characters.";
             return;
@@ -104,7 +121,7 @@
               headers: {
                 "Content-Type": "application/json",
               },
-              body: JSON.stringify({ username, password, role }),
+              body: JSON.stringify({ username, password, role, ...extraData }),
             });
 
             const result = await response.json();
