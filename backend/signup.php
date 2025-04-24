@@ -53,7 +53,7 @@ if ($stmt->execute()) {
 
     if ($role === 'student') {
         // Insert student details
-        $name = isset($data['name']) ? trim($data['name']) : '';
+        $name = isset($data['studentName']) ? trim($data['studentName']) : '';
         // Provide default or empty values for other required fields
         $address = '';
         $phoneNumber = '';
@@ -71,6 +71,23 @@ if ($stmt->execute()) {
             echo json_encode(['error' => 'Failed to register student details']);
         }
         $stmtStudent->close();
+    } elseif ($role === 'faculty') {
+        // Insert faculty details
+        $facultyName = isset($data['facultyName']) ? trim($data['facultyName']) : '';
+        $facultyPhoneNumber = isset($data['facultyPhoneNumber']) ? trim($data['facultyPhoneNumber']) : '';
+        $facultyDOB = isset($data['facultyDOB']) && $data['facultyDOB'] !== '' ? $data['facultyDOB'] : null;
+
+        $stmtFaculty = $conn->prepare("INSERT INTO Faculty (Name, PhoneNumber, DOB) VALUES (?, ?, ?)");
+        $stmtFaculty->bind_param("sss", $facultyName, $facultyPhoneNumber, $facultyDOB);
+
+        if ($stmtFaculty->execute()) {
+            http_response_code(201);
+            echo json_encode(['message' => 'User and faculty registered successfully']);
+        } else {
+            http_response_code(500);
+            echo json_encode(['error' => 'Failed to register faculty details']);
+        }
+        $stmtFaculty->close();
     } else {
         http_response_code(201);
         echo json_encode(['message' => 'User registered successfully']);
