@@ -100,8 +100,12 @@
                     const result = await response.json();
 
                     if (response.ok) {
-                        // Redirect to faculty dashboard on successful login
-                        window.location.href = 'faculty dashbord.html';
+                        if (result.user.role === 'faculty') {
+                            // Redirect to faculty dashboard on successful login
+                            window.location.href = 'faculty dashbord.html';
+                        } else {
+                            messageDiv.textContent = 'Access denied: Not a faculty account';
+                        }
                     } else {
                         messageDiv.textContent = result.error || 'Login failed';
                     }

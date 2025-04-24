@@ -103,8 +103,12 @@
                     const result = await response.json();
 
                     if (response.ok) {
-                        // Redirect to student dashboard on successful login
-                        window.location.href = 'student dashbord.html';
+                        if (result.user.role === 'student') {
+                            // Redirect to student dashboard on successful login
+                            window.location.href = 'student dashbord.html';
+                        } else {
+                            messageDiv.textContent = 'Access denied: Not a student account';
+                        }
                     } else {
                         messageDiv.textContent = result.error || 'Login failed';
                     }
