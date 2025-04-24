@@ -38,6 +38,9 @@
 
         <!-- Student Sign Up -->
         <div id="studentForm" class="mb-4">
+          <label for="studentName" class="block text-left text-lg font-medium">Student Name</label>
+          <input type="text" id="studentName" name="studentName" class="w-full p-2 rounded-md border-gray-300" required />
+
           <label for="registrationNumber" class="block text-left text-lg font-medium">Registration Number</label>
           <input type="text" id="registrationNumber" name="registrationNumber" class="w-full p-2 rounded-md border-gray-300" required />
           
@@ -99,6 +102,7 @@
           let extraData = {};
           if (role === "student") {
             extraData = {
+              studentName: signupForm.studentName.value.trim(),
               registrationNumber: signupForm.registrationNumber.value.trim(),
               batch: signupForm.batch.value.trim(),
               class: signupForm.class.value.trim(),
