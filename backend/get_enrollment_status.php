@@ -16,10 +16,11 @@ if (!isset($_GET['studentID'])) {
 
 $studentID = intval($_GET['studentID']);
 
-$sql = "SELECT Semester, Status, COUNT(*) AS CoursesEnrolled, MAX(EnrollmentDate) AS LastEnrollmentDate
-        FROM Enrollments
-        WHERE StudentID = ?
-        GROUP BY Semester, Status";
+$sql = "SELECT s.Semester, e.Status, COUNT(*) AS CoursesEnrolled, MAX(e.EnrollmentDate) AS LastEnrollmentDate
+        FROM Enrollments e
+        JOIN Students s ON e.StudentID = s.StudentID
+        WHERE e.StudentID = ?
+        GROUP BY s.Semester, e.Status";
 
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $studentID);
