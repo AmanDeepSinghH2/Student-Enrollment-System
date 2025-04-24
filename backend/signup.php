@@ -26,6 +26,15 @@ if (strlen($username) < 3 || strlen($password) < 6) {
     exit;
 }
 
+// Additional validation for faculty fields
+if ($role === 'faculty') {
+    if (empty($data['facultyName'])) {
+        http_response_code(400);
+        echo json_encode(['error' => 'Faculty name is required']);
+        exit;
+    }
+}
+
 // Check if username already exists
 $stmt = $conn->prepare("SELECT UserID FROM Users WHERE Username = ?");
 $stmt->bind_param("s", $username);
@@ -85,7 +94,7 @@ if ($stmt->execute()) {
             echo json_encode(['message' => 'User and faculty registered successfully']);
         } else {
             http_response_code(500);
-            echo json_encode(['error' => 'Failed to register faculty details']);
+            echo json_encode(['error' => 'Failed to register faculty details: ' . $stmtFaculty->error]);
         }
         $stmtFaculty->close();
     } else {

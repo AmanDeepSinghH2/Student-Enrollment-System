@@ -142,6 +142,9 @@
               signupForm.reset();
               studentForm.style.display = "block";
               facultyForm.style.display = "none";
+              if (role === "faculty") {
+                window.location.href = "faculty_login.html";
+              }
             } else {
               messageDiv.style.color = "red";
               messageDiv.textContent = result.error || "Sign up failed";

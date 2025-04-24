@@ -21,18 +21,21 @@
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            width: 350px;
+            width: 100%;
+            max-width: 400px;
             text-align: center;
         }
         h2 {
             margin-bottom: 20px;
+            font-weight: 500;
         }
-        input[type="email"], input[type="password"] {
+        input[type="text"], input[type="password"] {
             width: 100%;
             padding: 10px;
             margin: 10px 0;
             border: 1px solid #ccc;
             border-radius: 5px;
+            font-size: 14px;
         }
         button {
             background-color: #007BFF;
@@ -43,7 +46,8 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            transition: background-color 0.3s;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
         }
         button:hover {
             background-color: #0056b3;
@@ -55,6 +59,10 @@
         .back-link a {
             text-decoration: none;
             color: #007BFF;
+            transition: color 0.3s ease;
+        }
+        .back-link a:hover {
+            color: #0056b3;
         }
     </style>
 </head>
