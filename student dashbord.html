@@ -21,6 +21,27 @@
     <nav class="space-x-4">
       <button onclick="window.location.href='signin.html'" class="bg-white text-gray-800 font-semibold px-4 py-2 rounded hover:bg-teal-100 transition">logout</button>
       <button onclick="window.location.href='info.html'" class="bg-white text-gray-800 font-semibold px-4 py-2 rounded hover:bg-teal-100 transition">Info</button>
+      <div class="relative inline-block">
+        <button class="bg-white text-gray-800 font-semibold px-4 py-2 rounded hover:bg-teal-100 transition">
+          Tools
+        </button>
+        <div class="absolute hidden bg-white text-gray-800 rounded shadow-md mt-2">
+          <a href="enrollment-status.html" class="block px-4 py-2 hover:bg-teal-100">Check Enrollment Status</a>
+          <a href="my-courses.html" class="block px-4 py-2 hover:bg-teal-100">Check My Courses</a>
+        </div>
+      </div>
+      <script>
+        const toolsButton = document.querySelector('.relative button');
+        const dropdownMenu = document.querySelector('.relative .absolute');
+        toolsButton.addEventListener('click', () => {
+          dropdownMenu.classList.toggle('hidden');
+        });
+        document.addEventListener('click', (e) => {
+          if (!toolsButton.contains(e.target)) {
+            dropdownMenu.classList.add('hidden');
+          }
+        });
+      </script>
     </nav>
   </header>
  <body class="bg-[#0f042d] min-h-screen flex flex-col">

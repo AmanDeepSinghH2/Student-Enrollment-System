@@ -18,12 +18,41 @@
   <!-- Header -->
   <header class="bg-gradient-to-r from-gray-800 to-teal-600 text-white p-4 flex justify-between items-center shadow-md">
     <h1 class="text-3xl font-bold cursor-pointer" onclick="window.location.href='index.html'">EnrollmentPRO</h1>
-    <nav class="space-x-4">
+<nav class="space-x-4">
       <button onclick="window.location.href='signin.html'" class="bg-white text-gray-800 font-semibold px-4 py-2 rounded hover:bg-teal-100 transition">logout</button>
       <button onclick="window.location.href='info.html'" class="bg-white text-gray-800 font-semibold px-4 py-2 rounded hover:bg-teal-100 transition">Info</button>
+      <button class="bg-white text-gray-800 font-semibold px-4 py-2 rounded hover:bg-teal-100 transition" id="toolsMenuButton">
+        Tools
+      </button>
+        <div class="absolute right-0 mt-2 w-56 bg-white border border-gray-300 rounded-md shadow-lg hidden" id="toolsDropdown">
+          <ul class="py-1">
+            <li><a href="frontend/course_faculty.html" class="block px-4 py-2 text-gray-800 hover:bg-teal-100">Check Course Faculty</a></li>
+            <li><a href="frontend/courses.html" class="block px-4 py-2 text-gray-800 hover:bg-teal-100">Check Courses</a></li>
+            <li><a href="frontend/enrollments.html" class="block px-4 py-2 text-gray-800 hover:bg-teal-100">Check Enrollment Status</a></li>
+            <li><a href="frontend/faculty.html" class="block px-4 py-2 text-gray-800 hover:bg-teal-100">Check Faculty Details</a></li>
+            <li><a href="frontend/grades.html" class="block px-4 py-2 text-gray-800 hover:bg-teal-100">Check Student Grades</a></li>
+            <li><a href="frontend/students.html" class="block px-4 py-2 text-gray-800 hover:bg-teal-100">Check Students</a></li>
+            <li><a href="frontend/student_parents.html" class="block px-4 py-2 text-gray-800 hover:bg-teal-100">Check Student Parents</a></li>
+          </ul>
+        </div>
+      </div>
+      <script>
+        const toolsMenuButton = document.getElementById('toolsMenuButton');
+        const toolsDropdown = document.getElementById('toolsDropdown');
+
+        toolsMenuButton.addEventListener('click', () => {
+          toolsDropdown.classList.toggle('hidden');
+        });
+
+        document.addEventListener('click', (event) => {
+          if (!toolsMenuButton.contains(event.target) && !toolsDropdown.contains(event.target)) {
+            toolsDropdown.classList.add('hidden');
+          }
+        });
+      </script>
     </nav>
   </header>
- <body class="bg-[#0f042d] min-h-screen flex flex-col">
+ <body class="bg-[</div>#0f042d] min-h-screen flex flex-col">
   
   <!-- Main Content -->
   <main class="flex-grow px-6 py-8 max-w-7xl mx-auto w-full">

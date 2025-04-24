@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>My Courses - EnrollmentPRO</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-b from-gray-200 to-gray-400 min-h-screen flex flex-col">
+
+  <header class="bg-gradient-to-r from-gray-800 to-teal-600 text-white p-4 flex justify-between items-center shadow-md">
+    <h1 class="text-3xl font-bold cursor-pointer" onclick="window.location.href='student dashbord.html'">EnrollmentPRO</h1>
+    <button onclick="window.history.back()" class="bg-white text-gray-800 font-semibold px-4 py-2 rounded hover:bg-teal-100 transition">Back</button>
+  </header>
+
+  <main class="flex-grow px-6 py-8 max-w-3xl mx-auto w-full">
+    <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">My Courses</h2>
+    <ul id="courses-list" class="bg-white p-6 rounded shadow-md text-gray-800 list-disc list-inside">
+      Loading courses...
+    </ul>
+  </main>
+
+  <footer class="bg-gradient-to-r from-gray-800 to-teal-600 text-white text-center py-4 mt-8 shadow-inner">
+    <strong class="text-xl tracking-wide">EnrollmentPRO</strong>
+  </footer>
+
+  <script>
+    // For demo, hardcoding studentID; in real app, get from session or auth
+    const studentID = 123456;
+
+    async function fetchMyCourses() {
+      try {
+        const response = await fetch(`backend/get_my_courses.php?studentID=${studentID}`);
+        const courses = await response.json();
+
+        const list = document.getElementById('courses-list');
+        if (courses.error) {
+          list.textContent = 'Error: ' + courses.error;
+          return;
+        }
+        if (courses.length === 0) {
+          list.textContent = 'You are not enrolled in any courses.';
+          return;
+        }
+
+        list.innerHTML = '';
+        courses.forEach(course => {
+          const li = document.createElement('li');
+          li.textContent = course.CourseName;
+          list.appendChild(li);
+        });
+      } catch (error) {
+        document.getElementById('courses-list').textContent = 'Failed to load courses.';
+      }
+    }
+
+    fetchMyCourses();
+  </script>
+</body>
+</html>
