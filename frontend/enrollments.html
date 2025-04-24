@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Enrollments Management</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        form { margin-bottom: 20px; }
+        label { display: block; margin-top: 10px; }
+        select, input { padding: 5px; width: 300px; }
+        table { border-collapse: collapse; width: 100%; margin-top: 20px; }
+        th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        .message { margin-top: 10px; }
+    </style>
+</head>
+<body>
+    <h1>Enrollments Management</h1>
+    <form id="enrollmentForm">
+        <label for="studentID">Student *</label>
+        <select id="studentID" name="studentID" required>
+            <option value="">Select Student</option>
+        </select>
+
+        <label for="status">Status *</label>
+        <select id="status" name="status" required>
+            <option value="">Select Status</option>
+            <option value="Pending">Pending</option>
+            <option value="Enrolled">Enrolled</option>
+        </select>
+
+        <label for="enrollmentDate">Enrollment Date</label>
+        <input type="date" id="enrollmentDate" name="enrollmentDate" />
+
+        <button type="submit">Add Enrollment</button>
+    </form>
+
+    <div class="message" id="message"></div>
+
+    <h2>Enrollments List</h2>
+    <table id="enrollmentsTable">
+        <thead>
+            <tr>
+                <th>ID</th><th>Student</th><th>Status</th><th>Enrollment Date</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <script>
+        const form = document.getElementById('enrollmentForm');
+        const messageDiv = document.getElementById('message');
+        const enrollmentsTableBody = document.querySelector('#enrollmentsTable tbody');
+        const studentSelect = document.getElementById('studentID');
+
+        function loadStudents() {
+            fetch('../backend/get_students.php')
+            .then(response => response.json())
+            .then(data => {
+                studentSelect.innerHTML = '<option value="">Select Student</option>';
+                data.forEach(student => {
+                    const option = document.createElement('option');
+                    option.value = student.StudentID;
+                    option.textContent = student.Name;
+                    studentSelect.appendChild(option);
+                });
+            });
+        }
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            messageDiv.textContent = '';
+
+            const formData = new FormData(form);
+
+            fetch('../backend/insert_enrollment.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    messageDiv.style.color = 'green';
+                    messageDiv.textContent = data.message;
+                    form.reset();
+                    loadEnrollments();
+                } else {
+                    messageDiv.style.color = 'red';
+                    messageDiv.textContent = data.message;
+                }
+            })
+            .catch(error => {
+                messageDiv.style.color = 'red';
+                messageDiv.textContent = 'Error: ' + error.message;
+            });
+        });
+
+        function loadEnrollments() {
+            fetch('../backend/get_enrollments.php')
+            .then(response => response.json())
+            .then(data => {
+                enrollmentsTableBody.innerHTML = '';
+                data.forEach(enrollment => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${enrollment.EnrollmentID}</td>
+                        <td>${enrollment.StudentName}</td>
+                        <td>${enrollment.Status}</td>
+                        <td>${enrollment.EnrollmentDate || ''}</td>
+                    `;
+                    enrollmentsTableBody.appendChild(tr);
+                });
+            })
+            .catch(error => {
+                enrollmentsTableBody.innerHTML = '<tr><td colspan="4">Failed to load enrollments</td></tr>';
+            });
+        }
+
+        // Initial load
+        loadStudents();
+        loadEnrollments();
+    </script>
+</body>
+</html>

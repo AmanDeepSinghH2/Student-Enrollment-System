@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Grades Management</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        form { margin-bottom: 20px; }
+        label { display: block; margin-top: 10px; }
+        select, input { padding: 5px; width: 300px; }
+        table { border-collapse: collapse; width: 100%; margin-top: 20px; }
+        th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        .message { margin-top: 10px; }
+    </style>
+</head>
+<body>
+    <h1>Grades Management</h1>
+    <form id="gradeForm">
+        <label for="studentID">Student *</label>
+        <select id="studentID" name="studentID" required>
+            <option value="">Select Student</option>
+        </select>
+
+        <label for="courseID">Course *</label>
+        <select id="courseID" name="courseID" required>
+            <option value="">Select Course</option>
+        </select>
+
+        <label for="grade">Grade *</label>
+        <select id="grade" name="grade" required>
+            <option value="">Select Grade</option>
+            <option value="A+">A+</option>
+            <option value="A">A</option>
+            <option value="B+">B+</option>
+            <option value="B">B</option>
+            <option value="C+">C+</option>
+            <option value="C">C</option>
+            <option value="D">D</option>
+            <option value="F">F</option>
+        </select>
+
+        <label for="gradeDate">Grade Date</label>
+        <input type="date" id="gradeDate" name="gradeDate" />
+
+        <button type="submit">Add Grade</button>
+    </form>
+
+    <div class="message" id="message"></div>
+
+    <h2>Grades List</h2>
+    <table id="gradesTable">
+        <thead>
+            <tr>
+                <th>ID</th><th>Student</th><th>Course</th><th>Grade</th><th>Grade Date</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <script>
+        const form = document.getElementById('gradeForm');
+        const messageDiv = document.getElementById('message');
+        const gradesTableBody = document.querySelector('#gradesTable tbody');
+        const studentSelect = document.getElementById('studentID');
+        const courseSelect = document.getElementById('courseID');
+
+        function loadStudents() {
+            fetch('../backend/get_students.php')
+            .then(response => response.json())
+            .then(data => {
+                studentSelect.innerHTML = '<option value="">Select Student</option>';
+                data.forEach(student => {
+                    const option = document.createElement('option');
+                    option.value = student.StudentID;
+                    option.textContent = student.Name;
+                    studentSelect.appendChild(option);
+                });
+            });
+        }
+
+        function loadCourses() {
+            fetch('../backend/get_courses.php')
+            .then(response => response.json())
+            .then(data => {
+                courseSelect.innerHTML = '<option value="">Select Course</option>';
+                data.forEach(course => {
+                    const option = document.createElement('option');
+                    option.value = course.CourseID;
+                    option.textContent = course.Name;
+                    courseSelect.appendChild(option);
+                });
+            });
+        }
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            messageDiv.textContent = '';
+
+            const formData = new FormData(form);
+
+            fetch('../backend/insert_grade.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    messageDiv.style.color = 'green';
+                    messageDiv.textContent = data.message;
+                    form.reset();
+                    loadGrades();
+                } else {
+                    messageDiv.style.color = 'red';
+                    messageDiv.textContent = data.message;
+                }
+            })
+            .catch(error => {
+                messageDiv.style.color = 'red';
+                messageDiv.textContent = 'Error: ' + error.message;
+            });
+        });
+
+        function loadGrades() {
+            fetch('../backend/get_grades.php')
+            .then(response => response.json())
+            .then(data => {
+                gradesTableBody.innerHTML = '';
+                data.forEach(grade => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${grade.GradeID}</td>
+                        <td>${grade.StudentName}</td>
+                        <td>${grade.CourseName}</td>
+                        <td>${grade.Grade}</td>
+                        <td>${grade.GradeDate || ''}</td>
+                    `;
+                    gradesTableBody.appendChild(tr);
+                });
+            })
+            .catch(error => {
+                gradesTableBody.innerHTML = '<tr><td colspan="5">Failed to load grades</td></tr>';
+            });
+        }
+
+        // Initial load
+        loadStudents();
+        loadCourses();
+        loadGrades();
+    </script>
+</body>
+</html>
