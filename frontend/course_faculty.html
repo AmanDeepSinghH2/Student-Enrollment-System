@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Course-Faculty Management</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        form { margin-bottom: 20px; }
+        label { display: block; margin-top: 10px; }
+        select { padding: 5px; width: 300px; }
+        table { border-collapse: collapse; width: 100%; margin-top: 20px; }
+        th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        .message { margin-top: 10px; }
+    </style>
+</head>
+<body>
+    <h1>Course-Faculty Management</h1>
+    <form id="mappingForm">
+        <label for="courseID">Course *</label>
+        <select id="courseID" name="courseID" required>
+            <option value="">Select Course</option>
+        </select>
+
+        <label for="facultyID">Faculty *</label>
+        <select id="facultyID" name="facultyID" required>
+            <option value="">Select Faculty</option>
+        </select>
+
+        <button type="submit">Add Mapping</button>
+    </form>
+
+    <div class="message" id="message"></div>
+
+    <h2>Course-Faculty Mappings</h2>
+    <table id="mappingsTable">
+        <thead>
+            <tr>
+                <th>ID</th><th>Course</th><th>Faculty</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <script>
+        const form = document.getElementById('mappingForm');
+        const messageDiv = document.getElementById('message');
+        const mappingsTableBody = document.querySelector('#mappingsTable tbody');
+        const courseSelect = document.getElementById('courseID');
+        const facultySelect = document.getElementById('facultyID');
+
+        function loadCourses() {
+            fetch('../backend/get_courses.php')
+            .then(response => response.json())
+            .then(data => {
+                courseSelect.innerHTML = '<option value="">Select Course</option>';
+                data.forEach(course => {
+                    const option = document.createElement('option');
+                    option.value = course.CourseID;
+                    option.textContent = course.Name;
+                    courseSelect.appendChild(option);
+                });
+            });
+        }
+
+        function loadFaculty() {
+            fetch('../backend/get_faculty.php')
+            .then(response => response.json())
+            .then(data => {
+                facultySelect.innerHTML = '<option value="">Select Faculty</option>';
+                data.forEach(faculty => {
+                    const option = document.createElement('option');
+                    option.value = faculty.FacultyID;
+                    option.textContent = faculty.Name;
+                    facultySelect.appendChild(option);
+                });
+            });
+        }
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            messageDiv.textContent = '';
+
+            const formData = new FormData(form);
+
+            fetch('../backend/insert_course_faculty.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    messageDiv.style.color = 'green';
+                    messageDiv.textContent = data.message;
+                    form.reset();
+                    loadMappings();
+                } else {
+                    messageDiv.style.color = 'red';
+                    messageDiv.textContent = data.message;
+                }
+            })
+            .catch(error => {
+                messageDiv.style.color = 'red';
+                messageDiv.textContent = 'Error: ' + error.message;
+            });
+        });
+
+        function loadMappings() {
+            fetch('../backend/get_course_faculty.php')
+            .then(response => response.json())
+            .then(data => {
+                mappingsTableBody.innerHTML = '';
+                data.forEach(mapping => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${mapping.ID}</td>
+                        <td>${mapping.CourseName}</td>
+                        <td>${mapping.FacultyName}</td>
+                    `;
+                    mappingsTableBody.appendChild(tr);
+                });
+            })
+            .catch(error => {
+                mappingsTableBody.innerHTML = '<tr><td colspan="3">Failed to load mappings</td></tr>';
+            });
+        }
+
+        // Initial load
+        loadCourses();
+        loadFaculty();
+        loadMappings();
+    </script>
+</body>
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Student Parents Management</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        form { margin-bottom: 20px; }
+        label { display: block; margin-top: 10px; }
+        input, select { padding: 5px; width: 300px; }
+        table { border-collapse: collapse; width: 100%; margin-top: 20px; }
+        th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        .message { margin-top: 10px; }
+    </style>
+</head>
+<body>
+    <h1>Student Parents Management</h1>
+    <form id="parentForm">
+        <label for="studentID">Student ID *</label>
+        <input type="number" id="studentID" name="studentID" required min="1" />
+
+        <label for="parentType">Parent Type *</label>
+        <select id="parentType" name="parentType" required>
+            <option value="">Select Parent Type</option>
+            <option value="Mother">Mother</option>
+            <option value="Father">Father</option>
+        </select>
+
+        <label for="phoneNumber">Phone Number</label>
+        <input type="text" id="phoneNumber" name="phoneNumber" maxlength="9" />
+
+        <button type="submit">Add Student Parent</button>
+    </form>
+
+    <div class="message" id="message"></div>
+
+    <h2>Student Parents List</h2>
+    <table id="parentsTable">
+        <thead>
+            <tr>
+                <th>Parent ID</th><th>Student ID</th><th>Parent Type</th><th>Phone Number</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <script>
+        const form = document.getElementById('parentForm');
+        const messageDiv = document.getElementById('message');
+        const parentsTableBody = document.querySelector('#parentsTable tbody');
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            messageDiv.textContent = '';
+
+            const formData = new FormData(form);
+
+            fetch('../backend/insert_student_parent.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    messageDiv.style.color = 'green';
+                    messageDiv.textContent = data.message;
+                    form.reset();
+                    loadParents();
+                } else {
+                    messageDiv.style.color = 'red';
+                    messageDiv.textContent = data.message;
+                }
+            })
+            .catch(error => {
+                messageDiv.style.color = 'red';
+                messageDiv.textContent = 'Error: ' + error.message;
+            });
+        });
+
+        function loadParents() {
+            fetch('../backend/get_student_parents.php')
+            .then(response => response.json())
+            .then(data => {
+                parentsTableBody.innerHTML = '';
+                data.forEach(parent => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${parent.ParentID}</td>
+                        <td>${parent.StudentID}</td>
+                        <td>${parent.ParentType}</td>
+                        <td>${parent.PhoneNumber || ''}</td>
+                    `;
+                    parentsTableBody.appendChild(tr);
+                });
+            })
+            .catch(error => {
+                parentsTableBody.innerHTML = '<tr><td colspan="4">Failed to load student parents</td></tr>';
+            });
+        }
+
+        // Initial load
+        loadParents();
+    </script>
+</body>
+</html>

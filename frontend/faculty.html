@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Faculty Management</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        form { margin-bottom: 20px; }
+        label { display: block; margin-top: 10px; }
+        input { padding: 5px; width: 300px; }
+        table { border-collapse: collapse; width: 100%; margin-top: 20px; }
+        th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        .message { margin-top: 10px; }
+    </style>
+</head>
+<body>
+    <h1>Faculty Management</h1>
+    <form id="facultyForm">
+        <label for="name">Name *</label>
+        <input type="text" id="name" name="name" required />
+
+        <label for="phoneNumber">Phone Number</label>
+        <input type="text" id="phoneNumber" name="phoneNumber" maxlength="9" />
+
+        <label for="dob">Date of Birth</label>
+        <input type="date" id="dob" name="dob" />
+
+        <button type="submit">Add Faculty</button>
+    </form>
+
+    <div class="message" id="message"></div>
+
+    <h2>Faculty List</h2>
+    <table id="facultyTable">
+        <thead>
+            <tr>
+                <th>ID</th><th>Name</th><th>Phone Number</th><th>DOB</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <script>
+        const form = document.getElementById('facultyForm');
+        const messageDiv = document.getElementById('message');
+        const facultyTableBody = document.querySelector('#facultyTable tbody');
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            messageDiv.textContent = '';
+
+            const formData = new FormData(form);
+
+            fetch('../backend/insert_faculty.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    messageDiv.style.color = 'green';
+                    messageDiv.textContent = data.message;
+                    form.reset();
+                    loadFaculty();
+                } else {
+                    messageDiv.style.color = 'red';
+                    messageDiv.textContent = data.message;
+                }
+            })
+            .catch(error => {
+                messageDiv.style.color = 'red';
+                messageDiv.textContent = 'Error: ' + error.message;
+            });
+        });
+
+        function loadFaculty() {
+            fetch('../backend/get_faculty.php')
+            .then(response => response.json())
+            .then(data => {
+                facultyTableBody.innerHTML = '';
+                data.forEach(faculty => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${faculty.FacultyID}</td>
+                        <td>${faculty.Name}</td>
+                        <td>${faculty.PhoneNumber || ''}</td>
+                        <td>${faculty.DOB || ''}</td>
+                    `;
+                    facultyTableBody.appendChild(tr);
+                });
+            })
+            .catch(error => {
+                facultyTableBody.innerHTML = '<tr><td colspan="4">Failed to load faculty</td></tr>';
+            });
+        }
+
+        // Initial load
+        loadFaculty();
+    </script>
+</body>
+</html>
