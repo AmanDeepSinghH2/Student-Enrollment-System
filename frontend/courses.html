@@ -1,19 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Courses Management</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        form { margin-bottom: 20px; }
-        label { display: block; margin-top: 10px; }
-        input { padding: 5px; width: 300px; }
-        table { border-collapse: collapse; width: 100%; margin-top: 20px; }
-        th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
-        th { background-color: #f2f2f2; }
-        .message { margin-top: 10px; }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>About Us - EnrollmentPRO</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      AOS.init();
+    });
+  </script>
+</head>
+<body class="bg-gradient-to-b from-gray-200 to-gray-400 min-h-screen flex flex-col">
+
+  <!-- Header -->
+  <header class="bg-gradient-to-r from-gray-800 to-teal-600 text-white p-4 flex justify-between items-center shadow-md">
+    <h1 class="text-3xl font-bold cursor-pointer" onclick="window.location.href='index.html'">EnrollmentPRO</h1>
+    <nav class="space-x-4">
+      <button onclick="window.location.href='index.html'" class="bg-white text-gray-800 font-semibold px-4 py-2 rounded hover:bg-teal-100 transition">Back</button>
+      <button onclick="window.location.href='info.html'" class="bg-white text-gray-800 font-semibold px-4 py-2 rounded hover:bg-teal-100 transition">Info</button>
+    </nav>
+  </header>
+ <body class="bg-[#0f042d] min-h-screen flex flex-col">
 </head>
 <body>
     <h1>Courses Management</h1>
