@@ -48,13 +48,37 @@ $stmt = $conn->prepare("INSERT INTO Users (Username, PasswordHash, Role) VALUES 
 $stmt->bind_param("sss", $username, $passwordHash, $role);
 
 if ($stmt->execute()) {
-    http_response_code(201);
-    echo json_encode(['message' => 'User registered successfully']);
+    $userId = $stmt->insert_id;
+    $stmt->close();
+
+    if ($role === 'student') {
+        // Insert student details
+        $name = isset($data['name']) ? trim($data['name']) : '';
+        // Provide default or empty values for other required fields
+        $address = '';
+        $phoneNumber = '';
+        $dob = null;
+        $semester = 1;
+
+        $stmtStudent = $conn->prepare("INSERT INTO Students (Name, Address, PhoneNumber, DOB, Semester) VALUES (?, ?, ?, ?, ?)");
+        $stmtStudent->bind_param("ssssi", $name, $address, $phoneNumber, $dob, $semester);
+
+        if ($stmtStudent->execute()) {
+            http_response_code(201);
+            echo json_encode(['message' => 'User and student registered successfully']);
+        } else {
+            http_response_code(500);
+            echo json_encode(['error' => 'Failed to register student details']);
+        }
+        $stmtStudent->close();
+    } else {
+        http_response_code(201);
+        echo json_encode(['message' => 'User registered successfully']);
+    }
 } else {
     http_response_code(500);
     echo json_encode(['error' => 'Failed to register user']);
 }
 
-$stmt->close();
 $conn->close();
 ?>
