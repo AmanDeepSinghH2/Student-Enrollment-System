@@ -26,13 +26,15 @@
         }
         h2 {
             margin-bottom: 20px;
+            color: #333;
         }
-        input[type="email"], input[type="password"] {
+        input[type="text"], input[type="password"] {
             width: 100%;
             padding: 10px;
             margin: 10px 0;
             border: 1px solid #ccc;
             border-radius: 5px;
+            box-sizing: border-box;
         }
         button {
             background-color: #14B8A6;
@@ -43,10 +45,10 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            transition: background-color 0.3s;
+            transition: background-color 0.3s ease;
         }
         button:hover {
-            background-color: #14B8A6;
+            background-color: #0D9488;
         }
         .back-link {
             margin-top: 15px;
@@ -55,6 +57,10 @@
         .back-link a {
             text-decoration: none;
             color: #14B8A6;
+            transition: color 0.3s ease;
+        }
+        .back-link a:hover {
+            color: #0D9488;
         }
     </style>
 </head>
