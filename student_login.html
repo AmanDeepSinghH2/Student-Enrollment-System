@@ -62,11 +62,51 @@
 
     <div class="container">
         <h2>Student Login</h2>
-        <form action="student_home.html" method="POST">
-            <input type="email" name="email" placeholder="Enter your Gmail" required>
-            <input type="password" name="password" placeholder="Enter your password" required>
-            <button onclick="window.location.href='student_home.html'" class="hover:text-teal-300">LOGIN</button>
+        <form id="loginForm">
+            <input type="text" id="username" name="username" placeholder="Enter your username" required>
+            <input type="password" id="password" name="password" placeholder="Enter your password" required>
+            <button type="submit" class="hover:text-teal-300">LOGIN</button>
         </form>
+        <script>
+            const loginForm = document.getElementById('loginForm');
+            const messageDiv = document.createElement('div');
+            messageDiv.style.color = 'red';
+            loginForm.appendChild(messageDiv);
+
+            loginForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                messageDiv.textContent = '';
+
+                const username = loginForm.username.value.trim();
+                const password = loginForm.password.value;
+
+                if (username.length < 3 || password.length < 6) {
+                    messageDiv.textContent = 'Username must be at least 3 characters and password at least 6 characters.';
+                    return;
+                }
+
+                try {
+                    const response = await fetch('backend/signin.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ username, password }),
+                    });
+
+                    const result = await response.json();
+
+                    if (response.ok) {
+                        // Redirect to student dashboard on successful login
+                        window.location.href = 'student dashbord.html';
+                    } else {
+                        messageDiv.textContent = result.error || 'Login failed';
+                    }
+                } catch (error) {
+                    messageDiv.textContent = 'Error connecting to server';
+                }
+            });
+        </script>
         <div class="back-link">
             <p><a href="signin.html">Back to Sign In</a></p>
         </div>
