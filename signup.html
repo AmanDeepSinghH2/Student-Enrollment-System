@@ -17,7 +17,7 @@
   <div class="flex justify-center items-center h-screen bg-white shadow-lg p-10 mx-auto my-10 rounded-lg">
     <div class="w-2/3">
       <h2 class="text-2xl font-bold mb-6">Create Your Profile</h2>
-      <form action="#" method="POST">
+      <form id="signupForm">
         <div class="mb-4">
           <label for="userType" class="block text-left text-lg font-medium">Are you a student or faculty?</label>
           <select id="userType" name="userType" class="w-full p-2 rounded-md border-gray-300">
@@ -26,35 +26,122 @@
           </select>
         </div>
 
+        <div class="mb-4">
+          <label for="username" class="block text-left text-lg font-medium">Username</label>
+          <input type="text" id="username" name="username" class="w-full p-2 rounded-md border-gray-300" required />
+        </div>
+
+        <div class="mb-4">
+          <label for="password" class="block text-left text-lg font-medium">Password</label>
+          <input type="password" id="password" name="password" class="w-full p-2 rounded-md border-gray-300" required />
+        </div>
+
         <!-- Student Sign Up -->
         <div id="studentForm" class="mb-4">
           <label for="registrationNumber" class="block text-left text-lg font-medium">Registration Number</label>
           <input type="text" id="registrationNumber" name="registrationNumber" class="w-full p-2 rounded-md border-gray-300" required />
           
           <label for="batch" class="block text-left text-lg font-medium">Batch (1 or 2)</label>
-          <input type="text" id="batch" name="batch" class="w-full p-2 rounded-md border-gray-300" required />
+          <input type="text" id="batch" name="batch" class="w-full p-2 rounded-md border-gray-300" />
           
           <label for="class" class="block text-left text-lg font-medium">Class</label>
-          <input type="text" id="class" name="class" class="w-full p-2 rounded-md border-gray-300" required />
+          <input type="text" id="class" name="class" class="w-full p-2 rounded-md border-gray-300" />
         </div>
 
         <!-- Faculty Sign Up -->
         <div id="facultyForm" class="mb-4 hidden">
           <label for="facultyId" class="block text-left text-lg font-medium">Faculty ID</label>
-          <input type="text" id="facultyId" name="facultyId" class="w-full p-2 rounded-md border-gray-300" required />
+          <input type="text" id="facultyId" name="facultyId" class="w-full p-2 rounded-md border-gray-300" />
           
           <label for="facultyName" class="block text-left text-lg font-medium">Faculty Name</label>
-          <input type="text" id="facultyName" name="facultyName" class="w-full p-2 rounded-md border-gray-300" required />
+          <input type="text" id="facultyName" name="facultyName" class="w-full p-2 rounded-md border-gray-300" />
           
-          <label for="batch" class="block text-left text-lg font-medium">Batch (1 or 2)</label>
-          <input type="text" id="batch" name="batch" class="w-full p-2 rounded-md border-gray-300" required />
+          <label for="facultyBatch" class="block text-left text-lg font-medium">Batch (1 or 2)</label>
+          <input type="text" id="facultyBatch" name="facultyBatch" class="w-full p-2 rounded-md border-gray-300" />
           
-          <label for="class" class="block text-left text-lg font-medium">Class</label>
-          <input type="text" id="class" name="class" class="w-full p-2 rounded-md border-gray-300" required />
+          <label for="facultyClass" class="block text-left text-lg font-medium">Class</label>
+          <input type="text" id="facultyClass" name="facultyClass" class="w-full p-2 rounded-md border-gray-300" />
         </div>
 
         <button type="submit" class="bg-teal-600 text-white py-2 px-4 rounded hover:bg-teal-500 mt-4">Sign Up</button>
       </form>
+
+      <div id="message" class="mt-4 text-red-600 font-semibold"></div>
+
+      <script>
+        const userType = document.getElementById("userType");
+        const studentForm = document.getElementById("studentForm");
+        const facultyForm = document.getElementById("facultyForm");
+        const signupForm = document.getElementById("signupForm");
+        const messageDiv = document.getElementById("message");
+
+        userType.addEventListener("change", function () {
+          if (this.value === "student") {
+            studentForm.style.display = "block";
+            facultyForm.style.display = "none";
+          } else {
+            studentForm.style.display = "none";
+            facultyForm.style.display = "block";
+          }
+        });
+
+        signupForm.addEventListener("submit", async (e) => {
+          e.preventDefault();
+          messageDiv.textContent = "";
+
+          const username = signupForm.username.value.trim();
+          const password = signupForm.password.value;
+          const role = userType.value;
+
+          // Collect additional fields based on role
+          let extraData = {};
+          if (role === "student") {
+            extraData = {
+              registrationNumber: signupForm.registrationNumber.value.trim(),
+              batch: signupForm.batch.value.trim(),
+              class: signupForm.class.value.trim(),
+            };
+          } else if (role === "faculty") {
+            extraData = {
+              facultyId: signupForm.facultyId.value.trim(),
+              facultyName: signupForm.facultyName.value.trim(),
+              batch: signupForm.facultyBatch.value.trim(),
+              class: signupForm.facultyClass.value.trim(),
+            };
+          }
+
+          if (username.length < 3 || password.length < 6) {
+            messageDiv.textContent = "Username must be at least 3 characters and password at least 6 characters.";
+            return;
+          }
+
+          try {
+            const response = await fetch("backend/signup.php", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ username, password, role, ...extraData }),
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+              messageDiv.style.color = "green";
+              messageDiv.textContent = result.message;
+              signupForm.reset();
+              studentForm.style.display = "block";
+              facultyForm.style.display = "none";
+            } else {
+              messageDiv.style.color = "red";
+              messageDiv.textContent = result.error || "Sign up failed";
+            }
+          } catch (error) {
+            messageDiv.style.color = "red";
+            messageDiv.textContent = "Error connecting to server";
+          }
+        });
+      </script>
     </div>
   </div>
 
@@ -64,19 +151,7 @@
   </footer>
 
   <script>
-    const userType = document.getElementById("userType");
-    const studentForm = document.getElementById("studentForm");
-    const facultyForm = document.getElementById("facultyForm");
-
-    userType.addEventListener("change", function () {
-      if (this.value === "student") {
-        studentForm.style.display = "block";
-        facultyForm.style.display = "none";
-      } else {
-        studentForm.style.display = "none";
-        facultyForm.style.display = "block";
-      }
-    });
+    // Remove duplicate declarations and event listeners
   </script>
 
 </body>

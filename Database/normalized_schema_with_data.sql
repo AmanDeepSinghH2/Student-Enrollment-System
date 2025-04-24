@@ -96,6 +96,15 @@ JOIN CourseFaculty cf ON c.CourseID = cf.CourseID
 JOIN Faculty f ON cf.FacultyID = f.FacultyID;
 -- View normalized via join tabl
 
+-- Users Table for authentication
+CREATE TABLE Users (
+    UserID INT PRIMARY KEY AUTO_INCREMENT,
+    Username VARCHAR(100) NOT NULL UNIQUE,
+    PasswordHash VARCHAR(255) NOT NULL,
+    Role ENUM('student', 'faculty', 'admin') NOT NULL DEFAULT 'student',
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 ALTER TABLE Students MODIFY PhoneNumber VARCHAR(9);
 ALTER TABLE StudentParents MODIFY PhoneNumber VARCHAR(9);
 ALTER TABLE Faculty MODIFY PhoneNumber VARCHAR(9);
