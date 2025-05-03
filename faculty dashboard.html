@@ -79,10 +79,10 @@ $user = $_SESSION['user'];
       Associate Professor, Computer Science
      </p>
     </div>
-    <?php
+<?php
 require_once 'backend/db_connection.php';
 
-$coursesQuery = "SELECT course_name, stock FROM courses WHERE faculty_id = ?";
+$coursesQuery = "SELECT c.Name AS course_name FROM Courses c JOIN CourseFaculty cf ON c.CourseID = cf.CourseID WHERE cf.FacultyID = ?";
 $stmt = $conn->prepare($coursesQuery);
 $stmt->bind_param("i", $user['userID']);
 $stmt->execute();
@@ -100,11 +100,11 @@ if ($coursesResult->num_rows > 0) {
     Courses Teaching
   </h2>
   <ul class="flex flex-col gap-3 flex-grow overflow-auto">
-    <?php foreach ($courses as $course): ?>
+      <?php foreach ($courses as $course): ?>
       <li class="bg-[white] bg-opacity-80 rounded-md px-4 py-2 font-semibold shadow-[white]">
-        <?php echo htmlspecialchars($course['course_name']); ?> - Stock: <?php echo htmlspecialchars($course['stock']); ?>
+        <?php echo htmlspecialchars($course['course_name']); ?>
       </li>
-    <?php endforeach; ?>
+      <?php endforeach; ?>
   </ul>
 </div>
 

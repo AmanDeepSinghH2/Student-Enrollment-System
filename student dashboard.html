@@ -46,19 +46,19 @@
   </header>
  <body class="bg-[#0f042d] min-h-screen flex flex-col">
   
-  <?php
+  <php>
   session_start();
   if (!isset($_SESSION['user']) || $_SESSION['user']['role'] !== 'student') {
       header('Location: signin.html');
       exit;
   }
   $user = $_SESSION['user'];
-n
+
   // Fetch courses and stock details from the database
   require_once 'backend/db_connection.php';
 
   // Fetch courses
-  $coursesQuery = "SELECT course_name, stock FROM courses";
+  $coursesQuery = "SELECT Name AS course_name FROM Courses";
   $coursesResult = $conn->query($coursesQuery);
   $courses = [];
   if ($coursesResult->num_rows > 0) {
@@ -68,7 +68,7 @@ n
   }
 
   // Fetch enrollment details
-  $enrollmentQuery = "SELECT semester, enrollment_status, valid_till FROM enrollments WHERE student_id = ?";
+  $enrollmentQuery = "SELECT Semester AS semester, Status AS enrollment_status, EnrollmentDate AS valid_till FROM Enrollments WHERE StudentID = ?";
   $stmt = $conn->prepare($enrollmentQuery);
   $stmt->bind_param("i", $user['userID']);
   $stmt->execute();
@@ -102,7 +102,7 @@ n
       <ul class="flex flex-col gap-3 flex-grow overflow-auto">
         <?php foreach ($courses as $course): ?>
           <li class="bg-[white] bg-opacity-100 rounded-md px-4 py-2 font-semibold shadow-[#14b8a6]">
-            <?php echo htmlspecialchars($course['course_name']); ?> - Stock: <?php echo htmlspecialchars($course['stock']); ?>
+            <?php echo htmlspecialchars($course['course_name']); ?>
           </li>
         <?php endforeach; ?>
       </ul>
