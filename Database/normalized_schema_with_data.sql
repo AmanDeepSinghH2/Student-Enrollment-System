@@ -1,13 +1,15 @@
-
 -- Students Table
 CREATE TABLE Students (
     CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     StudentID INT PRIMARY KEY AUTO_INCREMENT,
     Name VARCHAR(100) NOT NULL,
     Address VARCHAR(255),
-    PhoneNumber VARCHAR(15),
+    PhoneNumber VARCHAR(9),
     DOB DATE,
-    Semester INT
+    Semester INT,
+    EmailID VARCHAR(100) NOT NULL UNIQUE,
+    Username VARCHAR(100) NOT NULL UNIQUE,
+    PasswordHash VARCHAR(255) NOT NULL
 );
 -- 1NF: Atomic fields (split names, phones, etc.)
 -- 2NF: No partial dependencies (only one key: StudentID)
@@ -17,7 +19,7 @@ CREATE TABLE StudentParents (
     ParentID INT PRIMARY KEY AUTO_INCREMENT,
     StudentID INT,
     ParentType ENUM('Mother', 'Father'),
-    PhoneNumber VARCHAR(15),
+    PhoneNumber VARCHAR(9),
     FOREIGN KEY (StudentID) REFERENCES Students(StudentID)
 );
 -- 1NF: Atomic parent info
@@ -27,8 +29,11 @@ CREATE TABLE StudentParents (
 CREATE TABLE Faculty (
     FacultyID INT PRIMARY KEY AUTO_INCREMENT,
     Name VARCHAR(100) NOT NULL,
-    PhoneNumber VARCHAR(15),
-    DOB DATE
+    PhoneNumber VARCHAR(9),
+    DOB DATE,
+    EmailID VARCHAR(100) NOT NULL UNIQUE,
+    Username VARCHAR(100) NOT NULL UNIQUE,
+    PasswordHash VARCHAR(255) NOT NULL
 );
 -- 1NF: Atomic fields
 -- 2NF: Single-key table
@@ -54,7 +59,7 @@ CREATE TABLE CourseFaculty (
 CREATE TABLE Enrollments (
     EnrollmentID INT PRIMARY KEY AUTO_INCREMENT,
     StudentID INT,
-    Status VARCHAR(50),
+    Status ENUM('Pending', 'Enrolled'),
     EnrollmentDate DATE,
     FOREIGN KEY (StudentID) REFERENCES Students(StudentID)
 );
@@ -96,16 +101,11 @@ JOIN CourseFaculty cf ON c.CourseID = cf.CourseID
 JOIN Faculty f ON cf.FacultyID = f.FacultyID;
 -- View normalized via join tabl
 
--- Users Table for authentication
-CREATE TABLE Users (
-    UserID INT PRIMARY KEY AUTO_INCREMENT,
-    Username VARCHAR(100) NOT NULL UNIQUE,
-    PasswordHash VARCHAR(255) NOT NULL,
-    Role ENUM('student', 'faculty', 'admin') NOT NULL DEFAULT 'student',
-    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
-ALTER TABLE Students MODIFY PhoneNumber VARCHAR(9);
-ALTER TABLE StudentParents MODIFY PhoneNumber VARCHAR(9);
-ALTER TABLE Faculty MODIFY PhoneNumber VARCHAR(9);
-ALTER TABLE Enrollments MODIFY Status ENUM('Pending', 'Enrolled');
+-- Users Table for authentication (removed)
+-- CREATE TABLE Users (
+--     UserID INT PRIMARY KEY AUTO_INCREMENT,
+--     Username VARCHAR(100) NOT NULL UNIQUE,
+--     PasswordHash VARCHAR(255) NOT NULL,
+--     Role ENUM('student', 'faculty', 'admin') NOT NULL DEFAULT 'student',
+--     CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+-- );

@@ -4,50 +4,47 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Enrollments Management</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        form { margin-bottom: 20px; }
-        label { display: block; margin-top: 10px; }
-        select, input { padding: 5px; width: 300px; }
-        table { border-collapse: collapse; width: 100%; margin-top: 20px; }
-        th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
-        th { background-color: #f2f2f2; }
-        .message { margin-top: 10px; }
-    </style>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
+<body class="bg-gradient-to-b from-gray-200 to-gray-400 min-h-screen p-6 font-sans">
+
     <button onclick="window.location.href='../faculty dashbord.html'" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded mb-4">Back</button>
-    <h1>Enrollments Management</h1>
-    <form id="enrollmentForm">
-        <label for="studentID">Student *</label>
-        <select id="studentID" name="studentID" required>
+    <h1 class="text-3xl font-bold mb-6 text-center text-gray-800">Enrollments Management</h1>
+    <form id="enrollmentForm" class="max-w-md mx-auto bg-white p-6 rounded-lg shadow-md">
+        <label for="studentID" class="block mb-2 font-semibold text-gray-700">Student *</label>
+        <select id="studentID" name="studentID" required class="w-full p-2 border border-gray-300 rounded mb-4">
             <option value="">Select Student</option>
         </select>
 
-        <label for="status">Status *</label>
-        <select id="status" name="status" required>
+        <label for="status" class="block mb-2 font-semibold text-gray-700">Status *</label>
+        <select id="status" name="status" required class="w-full p-2 border border-gray-300 rounded mb-4">
             <option value="">Select Status</option>
             <option value="Pending">Pending</option>
             <option value="Enrolled">Enrolled</option>
         </select>
 
-        <label for="enrollmentDate">Enrollment Date</label>
-        <input type="date" id="enrollmentDate" name="enrollmentDate" />
+        <label for="enrollmentDate" class="block mb-2 font-semibold text-gray-700">Enrollment Date</label>
+        <input type="date" id="enrollmentDate" name="enrollmentDate" class="w-full p-2 border border-gray-300 rounded mb-4" />
 
-        <button type="submit">Add Enrollment</button>
+        <button type="submit" class="w-full bg-teal-600 text-white font-semibold py-2 rounded hover:bg-teal-700 transition">Add Enrollment</button>
     </form>
 
-    <div class="message" id="message"></div>
+    <div id="message" class="text-center font-semibold mt-4"></div>
 
-    <h2>Enrollments List</h2>
-    <table id="enrollmentsTable">
-        <thead>
-            <tr>
-                <th>ID</th><th>Student</th><th>Status</th><th>Enrollment Date</th>
-            </tr>
-        </thead>
-        <tbody></tbody>
-    </table>
+    <h2 class="text-2xl font-semibold text-gray-800 mt-10 mb-4 text-center">Enrollments List</h2>
+    <div class="overflow-x-auto max-w-4xl mx-auto">
+        <table id="enrollmentsTable" class="w-full border-collapse border border-gray-300 rounded-lg shadow-md">
+            <thead class="bg-teal-600 text-white">
+                <tr>
+                    <th class="border border-gray-300 px-4 py-2 text-left">ID</th>
+                    <th class="border border-gray-300 px-4 py-2 text-left">Student</th>
+                    <th class="border border-gray-300 px-4 py-2 text-left">Status</th>
+                    <th class="border border-gray-300 px-4 py-2 text-left">Enrollment Date</th>
+                </tr>
+            </thead>
+            <tbody class="text-gray-800 divide-y divide-gray-200"></tbody>
+        </table>
+    </div>
 
     <script>
         const form = document.getElementById('enrollmentForm');

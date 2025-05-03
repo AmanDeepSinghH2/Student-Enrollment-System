@@ -18,13 +18,6 @@
     <div class="w-2/3">
       <h2 class="text-2xl font-bold mb-6">Create Your Profile</h2>
       <form id="signupForm">
-        <div class="mb-4">
-          <label for="userType" class="block text-left text-lg font-medium">Are you a student or faculty?</label>
-          <select id="userType" name="userType" class="w-full p-2 rounded-md border-gray-300">
-            <option value="student">Student</option>
-            <option value="faculty">Faculty</option>
-          </select>
-        </div>
 
         <div class="mb-4">
           <label for="username" class="block text-left text-lg font-medium">Username</label>
@@ -32,41 +25,25 @@
         </div>
 
         <div class="mb-4">
+          <label for="emailid" class="block text-left text-lg font-medium">Email</label>
+          <input type="email" id="emailid" name="emailid" class="w-full p-2 rounded-md border-gray-300" required />
+        </div>
+
+        <div class="mb-4">
           <label for="password" class="block text-left text-lg font-medium">Password</label>
           <input type="password" id="password" name="password" class="w-full p-2 rounded-md border-gray-300" required />
         </div>
 
-        <!-- Student Sign Up -->
-        <div id="studentForm" class="mb-4">
-          <label for="studentName" class="block text-left text-lg font-medium">Student Name</label>
-          <input type="text" id="studentName" name="studentName" class="w-full p-2 rounded-md border-gray-300" required />
-
-          <label for="registrationNumber" class="block text-left text-lg font-medium">Registration Number</label>
-          <input type="text" id="registrationNumber" name="registrationNumber" class="w-full p-2 rounded-md border-gray-300" required />
-          
-          <label for="batch" class="block text-left text-lg font-medium">Batch (1 or 2)</label>
-          <input type="text" id="batch" name="batch" class="w-full p-2 rounded-md border-gray-300" />
-          
-          <label for="class" class="block text-left text-lg font-medium">Class</label>
-          <input type="text" id="class" name="class" class="w-full p-2 rounded-md border-gray-300" />
-        </div>
-
         <!-- Faculty Sign Up -->
-        <div id="facultyForm" class="mb-4 hidden">
-          <label for="facultyId" class="block text-left text-lg font-medium">Faculty ID</label>
-          <input type="text" id="facultyId" name="facultyId" class="w-full p-2 rounded-md border-gray-300" />
-          
+        <div id="facultyForm" class="mb-4">
           <label for="facultyName" class="block text-left text-lg font-medium">Faculty Name</label>
-          <input type="text" id="facultyName" name="facultyName" class="w-full p-2 rounded-md border-gray-300" />
+          <input type="text" id="facultyName" name="facultyName" class="w-full p-2 rounded-md border-gray-300" required />
           
           <label for="facultyPhoneNumber" class="block text-left text-lg font-medium">Faculty Phone Number</label>
           <input type="text" id="facultyPhoneNumber" name="facultyPhoneNumber" class="w-full p-2 rounded-md border-gray-300" />
           
           <label for="facultyDOB" class="block text-left text-lg font-medium">Faculty Date of Birth</label>
           <input type="date" id="facultyDOB" name="facultyDOB" class="w-full p-2 rounded-md border-gray-300" />
-          
-          <label for="facultyClass" class="block text-left text-lg font-medium">Class</label>
-          <input type="text" id="facultyClass" name="facultyClass" class="w-full p-2 rounded-md border-gray-300" />
         </div>
 
         <button type="submit" class="bg-teal-600 text-white py-2 px-4 rounded hover:bg-teal-500 mt-4">Sign Up</button>
@@ -77,51 +54,32 @@
       <div id="message" class="mt-4 text-red-600 font-semibold"></div>
 
       <script>
-        const userType = document.getElementById("userType");
-        const studentForm = document.getElementById("studentForm");
-        const facultyForm = document.getElementById("facultyForm");
         const signupForm = document.getElementById("signupForm");
         const messageDiv = document.getElementById("message");
-
-        userType.addEventListener("change", function () {
-          if (this.value === "student") {
-            studentForm.style.display = "block";
-            facultyForm.style.display = "none";
-          } else {
-            studentForm.style.display = "none";
-            facultyForm.style.display = "block";
-          }
-        });
 
         signupForm.addEventListener("submit", async (e) => {
           e.preventDefault();
           messageDiv.textContent = "";
 
           const username = signupForm.username.value.trim();
+          const emailid = signupForm.emailid.value.trim();
           const password = signupForm.password.value;
-          const role = userType.value;
+          const role = "faculty";
 
-          // Collect additional fields based on role
-          let extraData = {};
-          if (role === "student") {
-            extraData = {
-              studentName: signupForm.studentName.value.trim(),
-              registrationNumber: signupForm.registrationNumber.value.trim(),
-              batch: signupForm.batch.value.trim(),
-              class: signupForm.class.value.trim(),
-            };
-          } else if (role === "faculty") {
-            extraData = {
-              facultyId: signupForm.facultyId.value.trim(),
-              facultyName: signupForm.facultyName.value.trim(),
-              facultyPhoneNumber: signupForm.facultyPhoneNumber.value.trim(),
-              facultyDOB: signupForm.facultyDOB.value,
-              facultyClass: signupForm.facultyClass.value.trim(),
-            };
-          }
+          // Collect faculty fields
+          const extraData = {
+            facultyName: signupForm.facultyName.value.trim(),
+            facultyPhoneNumber: signupForm.facultyPhoneNumber.value.trim(),
+            facultyDOB: signupForm.facultyDOB.value
+          };
 
           if (username.length < 3 || password.length < 6) {
             messageDiv.textContent = "Username must be at least 3 characters and password at least 6 characters.";
+            return;
+          }
+
+          if (!extraData.facultyName) {
+            messageDiv.textContent = "Faculty name is required.";
             return;
           }
 
@@ -131,7 +89,7 @@
               headers: {
                 "Content-Type": "application/json",
               },
-              body: JSON.stringify({ username, password, role, ...extraData }),
+              body: JSON.stringify({ username, emailid, password, role, ...extraData }),
             });
 
             const result = await response.json();
@@ -140,11 +98,7 @@
               messageDiv.style.color = "green";
               messageDiv.textContent = result.message;
               signupForm.reset();
-              studentForm.style.display = "block";
-              facultyForm.style.display = "none";
-              if (role === "faculty") {
-                window.location.href = "faculty_login.html";
-              }
+              window.location.href = "faculty_login.html";
             } else {
               messageDiv.style.color = "red";
               messageDiv.textContent = result.error || "Sign up failed";
@@ -162,10 +116,6 @@
   <footer class="bg-gradient-to-r from-gray-800 to-teal-600 text-white p-4 text-center">
     <strong>EnrollmentPRO</strong>
   </footer>
-
-  <script>
-    // Remove duplicate declarations and event listeners
-  </script>
 
 </body>
 </html>

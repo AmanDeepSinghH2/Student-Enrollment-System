@@ -3,13 +3,35 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>About Us - EnrollmentPRO</title>
+  <title>Student Dashboard - EnrollmentPRO</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script>
     document.addEventListener("DOMContentLoaded", function () {
       AOS.init();
+
+      fetch('backend/student_dashboard_data.php')
+        .then(response => response.json())
+        .then(data => {
+          document.getElementById('studentName').textContent = data.user.name;
+          document.getElementById('studentID').textContent = data.user.userID;
+
+          const coursesList = document.getElementById('coursesList');
+          data.courses.forEach(course => {
+            const li = document.createElement('li');
+            li.className = "bg-[white] bg-opacity-100 rounded-md px-4 py-2 font-semibold shadow-[#14b8a6]";
+            li.textContent = course.course_name;
+            coursesList.appendChild(li);
+          });
+
+          document.getElementById('semester').textContent = data.enrollment.semester || 'N/A';
+          document.getElementById('enrollmentStatus').textContent = data.enrollment.enrollment_status || 'N/A';
+          document.getElementById('validTill').textContent = data.enrollment.valid_till || 'N/A';
+        })
+        .catch(error => {
+          console.error('Error fetching student dashboard data:', error);
+        });
     });
   </script>
 </head>
@@ -44,9 +66,7 @@
       </script>
     </nav>
   </header>
- <body class="bg-[#0f042d] min-h-screen flex flex-col">
-  
-  <!-- Main Content -->
+
   <main class="flex-grow px-6 py-8 max-w-7xl mx-auto w-full">
    <h1 class="text-[#14b8a6] font-extrabold text-2xl mb-8 select-none text-center">
     Student Dashboard
@@ -54,56 +74,36 @@
    <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
     <!-- Profile Card -->
     <div class="bg-[#14b8a6]/70 border border-[black] rounded-md p-6 flex flex-col items-center text-black">
-     <img alt="Profile picture of student, placeholder image with abstract colorful background" class="w-24 h-24 rounded-full mb-4 shadow-[black]" height="96" src="https://storage.googleapis.com/a1aa/image/c13bc131-4d6a-44c6-e20c-e2f77adc66e8.jpg" width="96"/>
-     <h2 class="font-extrabold text-lg mb-1">
-      John Doe
-     </h2>
-     <p class="text-sm text-[black] mb-2 select-text">
-      Student ID: 123456
-     </p>
+     <h2 id="studentName" class="font-extrabold text-lg mb-1"></h2>
+     <p id="studentID" class="text-sm text-[black] mb-2 select-text"></p>
      <p class="text-sm text-center">
       Computer Science Undergraduate
      </p>
     </div>
-    <!-- Courses Card (replacing Notifications) -->
+    <!-- Updated Courses Card -->
     <div class="bg-[#14b8a6]/70 border border-[black] rounded-md p-6 text-black flex flex-col">
-     <h2 class="font-extrabold text-lg mb-4 text-[black] select-none">
-      Current Courses
-     </h2>
-     <ul class="flex flex-col gap-3 flex-grow overflow-auto">
-      <li class="bg-[white] bg-opacity-100 rounded-md px-4 py-2 font-semibold shadow-[#14b8a6]">
-       Data Structures and Algorithms
-      </li>
-      <li class="bg-[white] bg-opacity-100 rounded-md px-4 py-2 font-semibold shadow-[#14b8a6]">
-       Operating Systems
-      </li>
-      <li class="bg-[white] bg-opacity-100 rounded-md px-4 py-2 font-semibold shadow-[#14b8a6]">
-       Database Management Systems
-      </li>
-      <li class="bg-[white] bg-opacity-100 rounded-md px-4 py-2 font-semibold shadow-[#14b8a6]">
-       Computer Networks
-      </li>
-     </ul>
+      <h2 class="font-extrabold text-lg mb-4 text-[black] select-none">
+        Available Courses
+      </h2>
+      <ul id="coursesList" class="flex flex-col gap-3 flex-grow overflow-auto">
+      </ul>
     </div>
-    <!-- Enrollment Status Card -->
+    <!-- Updated Enrollment Status Card -->
     <div class="bg-[#14b8a6]/70 border border-[black] rounded-md p-6 text-black flex flex-col">
-     <h2 class="font-extrabold text-lg mb-4 text-[black] select-none">
-      Enrollment Status
-     </h2>
-     <ul class="flex flex-col gap-3 flex-grow overflow-auto">
-      <li class="bg-[white] bg-opacity-100 rounded-md px-4 py-2 font-semibold shadow-[#14b8a6]">
-       Semester: 5
-      </li>
-      <li class="bg-[white] bg-opacity-100 rounded-md px-4 py-2 font-semibold shadow-[#14b8a6]">
-       Enrollment: Active
-      </li>
-      <li class="bg-[white] bg-opacity-100 rounded-md px-4 py-2 font-semibold shadow-[#14b8a6]">
-       Courses Enrolled: 4
-      </li>
-      <li class="bg-[white] bg-opacity-100 rounded-md px-4 py-2 font-semibold shadow-[#14b8a6]">
-       Enrollment Valid Till: May 2024
-      </li>
-     </ul>
+      <h2 class="font-extrabold text-lg mb-4 text-[black] select-none">
+        Enrollment Details
+      </h2>
+      <ul class="flex flex-col gap-3 flex-grow overflow-auto">
+        <li class="bg-[white] bg-opacity-100 rounded-md px-4 py-2 font-semibold shadow-[#14b8a6]">
+          Semester: <span id="semester"></span>
+        </li>
+        <li class="bg-[white] bg-opacity-100 rounded-md px-4 py-2 font-semibold shadow-[#14b8a6]">
+          Enrollment Status: <span id="enrollmentStatus"></span>
+        </li>
+        <li class="bg-[white] bg-opacity-100 rounded-md px-4 py-2 font-semibold shadow-[#14b8a6]">
+          Valid Till: <span id="validTill"></span>
+        </li>
+      </ul>
     </div>
    </section>
   </main>

@@ -4,45 +4,40 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Course-Faculty Management</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        form { margin-bottom: 20px; }
-        label { display: block; margin-top: 10px; }
-        select { padding: 5px; width: 300px; }
-        table { border-collapse: collapse; width: 100%; margin-top: 20px; }
-        th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
-        th { background-color: #f2f2f2; }
-        .message { margin-top: 10px; }
-    </style>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
+<body class="bg-gradient-to-b from-gray-200 to-gray-400 min-h-screen p-6 font-sans">
     <button onclick="window.location.href='../faculty dashbord.html'" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded mb-4">Back</button>
-    <h1>Course-Faculty Management</h1>
-    <form id="mappingForm">
-        <label for="courseID">Course *</label>
-        <select id="courseID" name="courseID" required>
+    <h1 class="text-3xl font-bold mb-6 text-center text-gray-800">Course-Faculty Management</h1>
+    <form id="mappingForm" class="max-w-md mx-auto bg-white p-6 rounded-lg shadow-md">
+        <label for="courseID" class="block mb-2 font-semibold text-gray-700">Course *</label>
+        <select id="courseID" name="courseID" required class="w-full p-2 border border-gray-300 rounded mb-4">
             <option value="">Select Course</option>
         </select>
 
-        <label for="facultyID">Faculty *</label>
-        <select id="facultyID" name="facultyID" required>
+        <label for="facultyID" class="block mb-2 font-semibold text-gray-700">Faculty *</label>
+        <select id="facultyID" name="facultyID" required class="w-full p-2 border border-gray-300 rounded mb-4">
             <option value="">Select Faculty</option>
         </select>
 
-        <button type="submit">Add Mapping</button>
+        <button type="submit" class="w-full bg-teal-600 text-white font-semibold py-2 rounded hover:bg-teal-700 transition">Add Mapping</button>
     </form>
 
-    <div class="message" id="message"></div>
+    <div id="message" class="text-center font-semibold mt-4"></div>
 
-    <h2>Course-Faculty Mappings</h2>
-    <table id="mappingsTable">
-        <thead>
-            <tr>
-                <th>ID</th><th>Course</th><th>Faculty</th>
-            </tr>
-        </thead>
-        <tbody></tbody>
-    </table>
+    <h2 class="text-2xl font-semibold text-gray-800 mt-10 mb-4 text-center">Course-Faculty Mappings</h2>
+    <div class="overflow-x-auto max-w-4xl mx-auto">
+        <table id="mappingsTable" class="w-full border-collapse border border-gray-300 rounded-lg shadow-md">
+            <thead class="bg-teal-600 text-white">
+                <tr>
+                    <th class="border border-gray-300 px-4 py-2 text-left">ID</th>
+                    <th class="border border-gray-300 px-4 py-2 text-left">Course</th>
+                    <th class="border border-gray-300 px-4 py-2 text-left">Faculty</th>
+                </tr>
+            </thead>
+            <tbody class="text-gray-800 divide-y divide-gray-200"></tbody>
+        </table>
+    </div>
 
     <script>
         const form = document.getElementById('mappingForm');

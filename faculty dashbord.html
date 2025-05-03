@@ -3,38 +3,61 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>About Us - EnrollmentPRO</title>
+  <title>Faculty Dashboard - EnrollmentPRO</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script>
     document.addEventListener("DOMContentLoaded", function () {
       AOS.init();
+
+      fetch('backend/faculty_dashboard_data.php')
+        .then(response => response.json())
+        .then(data => {
+          document.getElementById('facultyName').textContent = data.user.name;
+          document.getElementById('facultyID').textContent = data.user.userID;
+
+          const coursesList = document.getElementById('coursesList');
+          const selectClass = document.getElementById('selectClass');
+
+          data.courses.forEach(course => {
+            const li = document.createElement('li');
+            li.className = "bg-[white] bg-opacity-80 rounded-md px-4 py-2 font-semibold shadow-[white]";
+            li.textContent = course.course_name;
+            coursesList.appendChild(li);
+
+            const option = document.createElement('option');
+            option.value = course.course_name;
+            option.textContent = course.course_name;
+            selectClass.appendChild(option);
+          });
+        })
+        .catch(error => {
+          console.error('Error fetching faculty dashboard data:', error);
+        });
     });
   </script>
 </head>
 <body class="bg-gradient-to-b from-gray-200 to-gray-400 min-h-screen flex flex-col">
 
-  <!-- Header -->
   <header class="bg-gradient-to-r from-gray-800 to-teal-600 text-white p-4 flex justify-between items-center shadow-md">
     <h1 class="text-3xl font-bold cursor-pointer" onclick="window.location.href='index.html'">EnrollmentPRO</h1>
-<nav class="space-x-4">
+    <nav class="space-x-4">
       <button onclick="window.location.href='signin.html'" class="bg-white text-gray-800 font-semibold px-4 py-2 rounded hover:bg-teal-100 transition">logout</button>
       <button onclick="window.location.href='info.html'" class="bg-white text-gray-800 font-semibold px-4 py-2 rounded hover:bg-teal-100 transition">Info</button>
       <button class="bg-white text-gray-800 font-semibold px-4 py-2 rounded hover:bg-teal-100 transition" id="toolsMenuButton">
         Tools
       </button>
-        <div class="absolute right-0 mt-2 w-56 bg-white border border-gray-300 rounded-md shadow-lg hidden" id="toolsDropdown">
-          <ul class="py-1">
-            <li><a href="frontend/course_faculty.html" class="block px-4 py-2 text-gray-800 hover:bg-teal-100">Check Course Faculty</a></li>
-            <li><a href="frontend/courses.html" class="block px-4 py-2 text-gray-800 hover:bg-teal-100">Check Courses</a></li>
-            <li><a href="frontend/enrollments.html" class="block px-4 py-2 text-gray-800 hover:bg-teal-100">Check Enrollment Status</a></li>
-            <li><a href="frontend/faculty.html" class="block px-4 py-2 text-gray-800 hover:bg-teal-100">Check Faculty Details</a></li>
-            <li><a href="frontend/grades.html" class="block px-4 py-2 text-gray-800 hover:bg-teal-100">Check Student Grades</a></li>
-            <li><a href="frontend/students.html" class="block px-4 py-2 text-gray-800 hover:bg-teal-100">Check Students</a></li>
-            <li><a href="frontend/student_parents.html" class="block px-4 py-2 text-gray-800 hover:bg-teal-100">Check Student Parents</a></li>
-          </ul>
-        </div>
+      <div class="absolute right-0 mt-2 w-56 bg-white border border-gray-300 rounded-md shadow-lg hidden" id="toolsDropdown">
+        <ul class="py-1">
+          <li><a href="frontend/course_faculty.html" class="block px-4 py-2 text-gray-800 hover:bg-teal-100">Check Course Faculty</a></li>
+          <li><a href="frontend/courses.html" class="block px-4 py-2 text-gray-800 hover:bg-teal-100">Check Courses</a></li>
+          <li><a href="frontend/enrollments.html" class="block px-4 py-2 text-gray-800 hover:bg-teal-100">Check Enrollment Status</a></li>
+          <li><a href="frontend/faculty.html" class="block px-4 py-2 text-gray-800 hover:bg-teal-100">Check Faculty Details</a></li>
+          <li><a href="frontend/grades.html" class="block px-4 py-2 text-gray-800 hover:bg-teal-100">Check Student Grades</a></li>
+          <li><a href="frontend/students.html" class="block px-4 py-2 text-gray-800 hover:bg-teal-100">Check Students</a></li>
+          <li><a href="frontend/student_parents.html" class="block px-4 py-2 text-gray-800 hover:bg-teal-100">Check Student Parents</a></li>
+        </ul>
       </div>
       <script>
         const toolsMenuButton = document.getElementById('toolsMenuButton');
@@ -52,69 +75,43 @@
       </script>
     </nav>
   </header>
- <body class="bg-[</div>#0f042d] min-h-screen flex flex-col">
-  
-  <!-- Main Content -->
+
   <main class="flex-grow px-6 py-8 max-w-7xl mx-auto w-full">
    <h1 class="text-[#14b8a6] font-extrabold text-2xl mb-8 select-none text-center">
     Faculty Dashboard
    </h1>
    <section class="grid grid-cols-1 sm:grid-cols-3 gap-8">
-    <!-- Profile Card -->
     <div class="bg-[#14b8a6]/70 border border-[black] rounded-md p-6 flex flex-col items-center text-black">
      <img alt="Profile picture of faculty, placeholder image with abstract colorful background" class="w-24 h-24 rounded-full mb-4 shadow-[0_0_10px_#d600ff]" height="96" src="https://storage.googleapis.com/a1aa/image/979f6909-b3e6-4e33-0841-dda91bdf0297.jpg" width="96"/>
-     <h2 class="font-extrabold text-lg mb-1">
-      Dr. Jane Smith
-     </h2>
-     <p class="text-sm text-[#ff1a66] mb-2 select-text">
-      Faculty ID: F78910
-     </p>
+     <h2 id="facultyName" class="font-extrabold text-lg mb-1"></h2>
+     <p id="facultyID" class="text-sm text-[#ff1a66] mb-2 select-text"></p>
      <p class="text-sm text-center">
       Associate Professor, Computer Science
      </p>
     </div>
-    <!-- Courses Teaching Card -->
+
     <div class="bg-[#14b8a6]/70 border border-[black] rounded-md p-6 text-black flex flex-col">
-     <h2 class="font-extrabold text-lg mb-4 text-[#ff1a66] select-none">
-      Courses Teaching
-     </h2>
-     <ul class="flex flex-col gap-3 flex-grow overflow-auto">
-      <li class="bg-[white] bg-opacity-80 rounded-md px-4 py-2 font-semibold shadow-[white]">
-       Advanced Algorithms
-      </li>
-      <li class="bg-[white] bg-opacity-80 rounded-md px-4 py-2 font-semibold shadow-[white]">
-       Distributed Systems
-      </li>
-      <li class="bg-[white] bg-opacity-80 rounded-md px-4 py-2 font-semibold shadow-[white]">
-       Machine Learning
-      </li>
-     </ul>
+      <h2 class="font-extrabold text-lg mb-4 text-[#ff1a66] select-none">
+        Courses Teaching
+      </h2>
+      <ul id="coursesList" class="flex flex-col gap-3 flex-grow overflow-auto">
+      </ul>
     </div>
-    <!-- Select Class for Enrollments Card -->
+
     <div class="bg-[#14b8a6]/70 border border-[black] rounded-md p-6 text-black flex flex-col">
-     <label class="font-extrabold text-[#ff1a66] mb-2 select-none" for="selectClass">
-      Select Class for Enrollments
-     </label>
-     <select class="bg-[bg-white] bg-opacity-80 rounded-md px-4 py-2 font-semibold text-black shadow-[black] focus:outline-none focus:ring-2 focus:ring-[black]" id="selectClass" name="selectClass" aria-label="Select class for enrollments">
-      <option value="" disabled selected>
-       Choose a class
-      </option>
-      <option value="advanced-algorithms">
-       Advanced Algorithms
-      </option>
-      <option value="distributed-systems">
-       Distributed Systems
-      </option>
-      <option value="machine-learning">
-       Machine Learning
-      </option>
-     </select>
+      <label class="font-extrabold text-[#ff1a66] mb-2 select-none" for="selectClass">
+        Select Class for Enrollments
+      </label>
+      <select id="selectClass" class="bg-[bg-white] bg-opacity-80 rounded-md px-4 py-2 font-semibold text-black shadow-[black] focus:outline-none focus:ring-2 focus:ring-[black]" name="selectClass" aria-label="Select class for enrollments">
+        <option value="" disabled selected>
+          Choose a class
+        </option>
+      </select>
     </div>
    </section>
    <section class="mt-10 flex justify-center">
    </section>
   </main>
-  <!-- Footer -->
    <footer class="bg-gradient-to-r from-gray-800 to-teal-600 text-white text-center py-8 mt-8 shadow-inner">
     <strong class="text-2xl tracking-wide">EnrollmentPRO</strong>
     <p class="text-sm text-teal-100 mt-2">Empowering student enrollment, the smart way.</p>
