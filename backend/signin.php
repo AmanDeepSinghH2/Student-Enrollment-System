@@ -1,7 +1,7 @@
 <?php
 header('Content-Type: application/json');
 include 'db_connection.php';
-session_start();
+
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);

@@ -10,20 +10,17 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
 $data = json_decode(file_get_contents('php://input'), true);
 
-if (!isset($data['username']) || !isset($data['password']) || !isset($data['emailid'])) {
+$username = trim($data['username'] ?? '');
+$emailid = trim($data['emailid'] ?? '');
+$password = $data['password'] ?? '';
+$role = $data['role'] ?? '';
+$facultyName = trim($data['facultyName'] ?? '');
+$facultyPhoneNumber = trim($data['facultyPhoneNumber'] ?? '');
+$facultyDOB = $data['facultyDOB'] ?? '';
+
+if ($role !== 'faculty') {
     http_response_code(400);
-    echo json_encode(['error' => 'Username, emailid and password are required']);
-    exit;
-}
-
-$username = trim($data['username']);
-$password = $data['password'];
-$emailid = trim($data['emailid']);
-$role = isset($data['role']) ? $data['role'] : 'faculty';
-
-if ($role !== 'faculty' && $role !== 'student') {
-    http_response_code(403);
-    echo json_encode(['error' => 'Only faculty or student signup is allowed.']);
+    echo json_encode(['error' => 'Invalid role']);
     exit;
 }
 
@@ -33,36 +30,21 @@ if (strlen($username) < 3 || strlen($password) < 6) {
     exit;
 }
 
-// Additional validation for faculty fields
-if ($role === 'faculty') {
-    if (empty($data['facultyName'])) {
-        http_response_code(400);
-        echo json_encode(['error' => 'Faculty name is required']);
-        exit;
-    }
+if (empty($facultyName)) {
+    http_response_code(400);
+    echo json_encode(['error' => 'Faculty name is required']);
+    exit;
 }
 
-// Additional validation for student fields
-if ($role === 'student') {
-    if (empty($data['studentName'])) {
-        http_response_code(400);
-        echo json_encode(['error' => 'Student name is required']);
-        exit;
-    }
-}
-
-// Check if username or emailid already exists in respective tables
-if ($role === 'faculty') {
-    $stmt = $conn->prepare("SELECT FacultyID FROM Faculty WHERE Username = ? OR EmailID = ?");
-} else {
-    $stmt = $conn->prepare("SELECT StudentID FROM Students WHERE Username = ? OR EmailID = ?");
-}
+// Check if username or email already exists in Faculty table
+$stmt = $conn->prepare("SELECT FacultyID FROM Faculty WHERE Username = ? OR EmailID = ?");
 $stmt->bind_param("ss", $username, $emailid);
 $stmt->execute();
 $stmt->store_result();
+
 if ($stmt->num_rows > 0) {
     http_response_code(409);
-    echo json_encode(['error' => 'Username or EmailID already exists']);
+    echo json_encode(['error' => 'Username or email already exists']);
     $stmt->close();
     $conn->close();
     exit;
@@ -72,41 +54,18 @@ $stmt->close();
 // Hash the password
 $passwordHash = password_hash($password, PASSWORD_DEFAULT);
 
-if ($role === 'faculty') {
-    // Insert faculty user
-    $stmt = $conn->prepare("INSERT INTO Faculty (Name, PhoneNumber, DOB, EmailID, Username, PasswordHash) VALUES (?, ?, ?, ?, ?, ?)");
-    $facultyName = isset($data['facultyName']) ? trim($data['facultyName']) : '';
-    $facultyPhoneNumber = isset($data['facultyPhoneNumber']) ? trim($data['facultyPhoneNumber']) : '';
-    $facultyDOB = isset($data['facultyDOB']) && $data['facultyDOB'] !== '' ? $data['facultyDOB'] : null;
-    $stmt->bind_param("ssssss", $facultyName, $facultyPhoneNumber, $facultyDOB, $emailid, $username, $passwordHash);
+// Insert new faculty record
+$stmt = $conn->prepare("INSERT INTO Faculty (Username, PasswordHash, Name, EmailID, PhoneNumber, DOB) VALUES (?, ?, ?, ?, ?, ?)");
+$stmt->bind_param("ssssss", $username, $passwordHash, $facultyName, $emailid, $facultyPhoneNumber, $facultyDOB);
 
-    if ($stmt->execute()) {
-        http_response_code(201);
-        echo json_encode(['message' => 'Faculty registered successfully']);
-    } else {
-        http_response_code(500);
-        echo json_encode(['error' => 'Failed to register faculty: ' . $stmt->error]);
-    }
-    $stmt->close();
+if ($stmt->execute()) {
+    http_response_code(201);
+    echo json_encode(['message' => 'Faculty registered successfully']);
 } else {
-    // Insert student user
-    $stmt = $conn->prepare("INSERT INTO Students (Name, Address, PhoneNumber, DOB, Semester, EmailID, Username, PasswordHash) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-    $studentName = isset($data['studentName']) ? trim($data['studentName']) : '';
-    $address = isset($data['address']) ? trim($data['address']) : '';
-    $phoneNumber = isset($data['phoneNumber']) ? trim($data['phoneNumber']) : '';
-    $dob = isset($data['dob']) && $data['dob'] !== '' ? $data['dob'] : null;
-    $semester = isset($data['semester']) ? intval($data['semester']) : 1;
-    $stmt->bind_param("ssssisss", $studentName, $address, $phoneNumber, $dob, $semester, $emailid, $username, $passwordHash);
-
-    if ($stmt->execute()) {
-        http_response_code(201);
-        echo json_encode(['message' => 'Student registered successfully']);
-    } else {
-        http_response_code(500);
-        echo json_encode(['error' => 'Failed to register student: ' . $stmt->error]);
-    }
-    $stmt->close();
+    http_response_code(500);
+    echo json_encode(['error' => 'Failed to register faculty: ' . $stmt->error]);
 }
 
+$stmt->close();
 $conn->close();
 ?>
