@@ -18,11 +18,11 @@ if (!isset($data['username']) || !isset($data['password'])) {
 
 $username = trim($data['username']);
 $password = $data['password'];
-$role = isset($data['role']) ? $data['role'] : 'student';
+$role = isset($data['role']) ? $data['role'] : 'faculty';
 
-if ($role === 'student') {
+if ($role !== 'faculty') {
     http_response_code(403);
-    echo json_encode(['error' => 'Student signup is not allowed. Please contact faculty for registration.']);
+    echo json_encode(['error' => 'Only faculty signup is allowed.']);
     exit;
 }
 
@@ -66,27 +66,7 @@ if ($stmt->execute()) {
     $userId = $stmt->insert_id;
     $stmt->close();
 
-    if ($role === 'student') {
-        // Insert student details
-        $name = isset($data['studentName']) ? trim($data['studentName']) : '';
-        // Provide default or empty values for other required fields
-        $address = '';
-        $phoneNumber = '';
-        $dob = null;
-        $semester = 1;
-
-        $stmtStudent = $conn->prepare("INSERT INTO Students (Name, Address, PhoneNumber, DOB, Semester) VALUES (?, ?, ?, ?, ?)");
-        $stmtStudent->bind_param("ssssi", $name, $address, $phoneNumber, $dob, $semester);
-
-        if ($stmtStudent->execute()) {
-            http_response_code(201);
-            echo json_encode(['message' => 'User and student registered successfully']);
-        } else {
-            http_response_code(500);
-            echo json_encode(['error' => 'Failed to register student details']);
-        }
-        $stmtStudent->close();
-    } elseif ($role === 'faculty') {
+    if ($role === 'faculty') {
         // Insert faculty details
         $facultyName = isset($data['facultyName']) ? trim($data['facultyName']) : '';
         $facultyPhoneNumber = isset($data['facultyPhoneNumber']) ? trim($data['facultyPhoneNumber']) : '';

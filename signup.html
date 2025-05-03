@@ -18,12 +18,6 @@
     <div class="w-2/3">
       <h2 class="text-2xl font-bold mb-6">Create Your Profile</h2>
       <form id="signupForm">
-        <div class="mb-4">
-          <label for="userType" class="block text-left text-lg font-medium">Are you a student or faculty?</label>
-          <select id="userType" name="userType" class="w-full p-2 rounded-md border-gray-300">
-            <option value="faculty" selected>Faculty</option>
-          </select>
-        </div>
 
         <div class="mb-4">
           <label for="username" class="block text-left text-lg font-medium">Username</label>
@@ -55,8 +49,6 @@
       <div id="message" class="mt-4 text-red-600 font-semibold"></div>
 
       <script>
-        const userType = document.getElementById("userType");
-        const facultyForm = document.getElementById("facultyForm");
         const signupForm = document.getElementById("signupForm");
         const messageDiv = document.getElementById("message");
 
@@ -66,15 +58,13 @@
 
           const username = signupForm.username.value.trim();
           const password = signupForm.password.value;
-          const role = userType.value;
+          const role = "faculty";
 
           // Collect faculty fields
           const extraData = {
             facultyId: signupForm.facultyId.value.trim(),
             facultyName: signupForm.facultyName.value.trim(),
-            facultyPhoneNumber: signupForm.facultyPhoneNumber.value.trim(),
-            facultyDOB: signupForm.facultyDOB.value,
-            facultyClass: signupForm.facultyClass.value.trim(),
+            facultyPhoneNumber: signupForm.facultyPhoneNumber.value.trim()
           };
 
           if (username.length < 3 || password.length < 6) {
@@ -97,9 +87,7 @@
               messageDiv.style.color = "green";
               messageDiv.textContent = result.message;
               signupForm.reset();
-              if (role === "faculty") {
-                window.location.href = "faculty_login.html";
-              }
+              window.location.href = "faculty_login.html";
             } else {
               messageDiv.style.color = "red";
               messageDiv.textContent = result.error || "Sign up failed";
@@ -117,10 +105,6 @@
   <footer class="bg-gradient-to-r from-gray-800 to-teal-600 text-white p-4 text-center">
     <strong>EnrollmentPRO</strong>
   </footer>
-
-  <script>
-    // Remove duplicate declarations and event listeners
-  </script>
 
 </body>
 </html>
