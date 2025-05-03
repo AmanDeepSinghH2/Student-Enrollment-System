@@ -36,14 +36,14 @@
 
         <!-- Faculty Sign Up -->
         <div id="facultyForm" class="mb-4">
-          <label for="facultyId" class="block text-left text-lg font-medium">Faculty ID</label>
-          <input type="text" id="facultyId" name="facultyId" class="w-full p-2 rounded-md border-gray-300" />
-          
           <label for="facultyName" class="block text-left text-lg font-medium">Faculty Name</label>
-          <input type="text" id="facultyName" name="facultyName" class="w-full p-2 rounded-md border-gray-300" />
+          <input type="text" id="facultyName" name="facultyName" class="w-full p-2 rounded-md border-gray-300" required />
           
           <label for="facultyPhoneNumber" class="block text-left text-lg font-medium">Faculty Phone Number</label>
           <input type="text" id="facultyPhoneNumber" name="facultyPhoneNumber" class="w-full p-2 rounded-md border-gray-300" />
+          
+          <label for="facultyDOB" class="block text-left text-lg font-medium">Faculty Date of Birth</label>
+          <input type="date" id="facultyDOB" name="facultyDOB" class="w-full p-2 rounded-md border-gray-300" />
         </div>
 
         <button type="submit" class="bg-teal-600 text-white py-2 px-4 rounded hover:bg-teal-500 mt-4">Sign Up</button>
@@ -68,13 +68,18 @@
 
           // Collect faculty fields
           const extraData = {
-            facultyId: signupForm.facultyId.value.trim(),
             facultyName: signupForm.facultyName.value.trim(),
-            facultyPhoneNumber: signupForm.facultyPhoneNumber.value.trim()
+            facultyPhoneNumber: signupForm.facultyPhoneNumber.value.trim(),
+            facultyDOB: signupForm.facultyDOB.value
           };
 
           if (username.length < 3 || password.length < 6) {
             messageDiv.textContent = "Username must be at least 3 characters and password at least 6 characters.";
+            return;
+          }
+
+          if (!extraData.facultyName) {
+            messageDiv.textContent = "Faculty name is required.";
             return;
           }
 

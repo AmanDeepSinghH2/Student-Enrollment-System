@@ -78,6 +78,10 @@ if ($role === 'faculty') {
     $facultyName = isset($data['facultyName']) ? trim($data['facultyName']) : '';
     $facultyPhoneNumber = isset($data['facultyPhoneNumber']) ? trim($data['facultyPhoneNumber']) : '';
     $facultyDOB = isset($data['facultyDOB']) && $data['facultyDOB'] !== '' ? $data['facultyDOB'] : null;
+    // If facultyDOB is null, bind as null string to avoid errors
+    if ($facultyDOB === null) {
+        $facultyDOB = null;
+    }
     $stmt->bind_param("ssssss", $facultyName, $facultyPhoneNumber, $facultyDOB, $emailid, $username, $passwordHash);
 
     if ($stmt->execute()) {
