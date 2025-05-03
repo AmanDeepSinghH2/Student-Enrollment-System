@@ -20,6 +20,12 @@ $username = trim($data['username']);
 $password = $data['password'];
 $role = isset($data['role']) ? $data['role'] : 'student';
 
+if ($role === 'student') {
+    http_response_code(403);
+    echo json_encode(['error' => 'Student signup is not allowed. Please contact faculty for registration.']);
+    exit;
+}
+
 if (strlen($username) < 3 || strlen($password) < 6) {
     http_response_code(400);
     echo json_encode(['error' => 'Username must be at least 3 characters and password at least 6 characters']);
