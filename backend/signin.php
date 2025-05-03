@@ -1,6 +1,7 @@
 <?php
 header('Content-Type: application/json');
 include 'db_connection.php';
+session_start();
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
@@ -43,20 +44,20 @@ if ($stmt->num_rows === 1) {
         exit;
     }
 
+    // Store user details in session
+    $_SESSION['user'] = [
+        'userID' => $userID,
+        'username' => $username,
+        'name' => $name,
+        'emailid' => $emailid,
+        'role' => 'faculty'
+    ];
+
     $stmt->close();
     $conn->close();
 
-    // Authentication successful for faculty
-    echo json_encode([
-        'message' => 'Login successful',
-        'user' => [
-            'userID' => $userID,
-            'username' => $username,
-            'name' => $name,
-            'emailid' => $emailid,
-            'role' => 'faculty'
-        ]
-    ]);
+    // Redirect to faculty dashboard
+    header('Location: ../faculty dashbord.html');
     exit;
 }
 
@@ -80,20 +81,20 @@ if ($stmt->num_rows === 1) {
         exit;
     }
 
+    // Store user details in session
+    $_SESSION['user'] = [
+        'userID' => $userID,
+        'username' => $username,
+        'name' => $name,
+        'emailid' => $emailid,
+        'role' => 'student'
+    ];
+
     $stmt->close();
     $conn->close();
 
-    // Authentication successful for student
-    echo json_encode([
-        'message' => 'Login successful',
-        'user' => [
-            'userID' => $userID,
-            'username' => $username,
-            'name' => $name,
-            'emailid' => $emailid,
-            'role' => 'student'
-        ]
-    ]);
+    // Redirect to student dashboard
+    header('Location: ../student dashbord.html');
     exit;
 }
 
