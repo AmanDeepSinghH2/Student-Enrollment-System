@@ -1,7 +1,7 @@
 <?php
 include 'db_connection.php';
 
-$sql = "SELECT StudentID, Name, Address, PhoneNumber, DOB, Semester FROM Students ORDER BY StudentID DESC";
+$sql = "SELECT StudentID, Email, Username, Name, Address, PhoneNumber, DOB, Semester FROM Students ORDER BY StudentID DESC";
 $result = $conn->query($sql);
 
 $students = [];
