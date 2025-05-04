@@ -1,83 +1,403 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>About Us - EnrollmentPRO</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
-  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      AOS.init();
-    });
-  </script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Courses Management</title>
+    <style>
+        :root {
+            --primary-color: #14b8a6;
+            --secondary-color: #0f766e;
+            --background-color: #f8fafc;
+            --text-color: #1e293b;
+            --border-color: #e2e8f0;
+        }
+
+        body { 
+            font-family: 'Segoe UI', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding-top: 6rem; /* Add space for fixed header */
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        h1 {
+            color: var(--text-color);
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            border-bottom: 3px solid var(--primary-color);
+            padding-bottom: 0.5rem;
+            display: inline-block;
+        }
+
+        form {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        label {
+            display: block;
+            margin-top: 1rem;
+            color: var(--text-color);
+            font-weight: 500;
+        }
+
+        input {
+            width: 100%;
+            padding: 0.75rem;
+            margin-top: 0.5rem;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(20, 184, 166, 0.2);
+        }
+
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            margin-top: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .back-button {
+            background-color: #64748b;
+            margin-bottom: 1.5rem;
+        }
+
+        .back-button:hover {
+            background-color: #475569;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: 500;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover {
+            background-color: #f1f5f9;
+        }
+
+        .message {
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+
+        .message.success {
+            background-color: #dcfce7;
+            color: #166534;
+            border: 1px solid #86efac;
+        }
+
+        .message.error {
+            background-color: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+
+            input {
+                width: calc(100% - 1.5rem);
+            }
+
+            table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+
+        /* Header Styles */
+        .header {
+            background: linear-gradient(to right, #1e293b, #14b8a6);
+            padding: 1.5rem 2rem;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 50;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            max-width: 1200px; /* Fix the 7xl value */
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            color: white;
+            font-size: 2.25rem;
+            font-weight: bold;
+            margin: 0;
+            border: none;
+            transition: all 0.3s ease;
+        }
+
+        .header h1:hover {
+            color: #5eead4;
+            transform: scale(1.05);
+        }
+
+        .header-buttons {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .header-button {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 0.625rem 1.25rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .header-button:hover {
+            background-color: white;
+            color: #1e293b;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Footer Styles */
+        .footer {
+            background: linear-gradient(to right, #1e293b, #14b8a6);
+            color: white;
+            padding: 2.5rem 0;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            max-width: 7xl;
+            margin: 0 auto;
+            text-align: center;
+            padding: 0 2rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: #5eead4;
+            transform: translateY(-2px);
+        }
+
+        .copyright {
+            margin-top: 1rem;
+            font-size: 0.875rem;
+            opacity: 0.8;
+        }
+
+        .page-title {
+            text-align: center;
+            color: var(--text-color);
+            font-size: 2.5rem;
+            margin: 1rem 0 2rem 0;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid var(--primary-color);
+            display: inline-block;
+        }
+
+        .title-container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+
+        /* Add these styles in the <style> section */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background-color: white;
+            min-width: 200px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            border-radius: 0.5rem;
+            z-index: 51;
+        }
+
+        .dropdown-content.show {
+            display: block;
+        }
+
+        .dropdown-link {
+            color: #1e293b;
+            padding: 0.75rem 1rem;
+            text-decoration: none;
+            display: block;
+            transition: all 0.3s ease;
+        }
+
+        .dropdown-link:hover {
+            background-color: #f8fafc;
+            color: #14b8a6;
+        }
+    </style>
 </head>
-<body class="flex flex-col min-h-screen bg-gradient-to-b from-gray-200 to-gray-400 p-6">
-
+<body>
   <!-- Header -->
-  <header class="bg-gradient-to-r from-gray-800 to-teal-600 text-white p-4 flex justify-between items-center shadow-md">
-    <h1 class="text-3xl font-bold cursor-pointer" onclick="window.location.href='../index.html'">EnrollmentPRO</h1>
-    <nav class="flex items-center space-x-4">
-        <!-- Tools Dropdown -->
-        <div class="relative">
-            <button onclick="toggleDropdown()" 
-                    class="bg-white/10 text-white px-4 py-2 rounded hover:bg-white hover:text-gray-800 transition">
-                Tools
-            </button>
-            <div id="toolsDropdown" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50">
-                <a href="faculty.html" class="block px-4 py-2 text-gray-800 hover:bg-teal-50 hover:text-teal-600">Manage Faculty</a>
-                <a href="students.html" class="block px-4 py-2 text-gray-800 hover:bg-teal-50 hover:text-teal-600">Manage Students</a>
-                <a href="courses.html" class="block px-4 py-2 text-gray-800 hover:bg-teal-50 hover:text-teal-600">Manage Courses</a>
-                <a href="course_faculty.html" class="block px-4 py-2 text-gray-800 hover:bg-teal-50 hover:text-teal-600">Course-Faculty Assignment</a>
-                <a href="enrollments.html" class="block px-4 py-2 text-gray-800 hover:bg-teal-50 hover:text-teal-600">Manage Enrollments</a>
-                <a href="grades.html" class="block px-4 py-2 text-gray-800 hover:bg-teal-50 hover:text-teal-600">Manage Grades</a>
-            </div>
+  <header class="header">
+    <div class="header-content">
+      <h1 onclick="window.location.href='../index.html'" style="cursor: pointer;">
+        EnrollmentPRO
+      </h1>
+      <div class="header-buttons">
+        <div class="dropdown">
+          <button onclick="toggleDropdown()" class="header-button">
+            Tools
+          </button>
+          <div id="toolsDropdown" class="dropdown-content">
+            <a href="faculty.html" class="dropdown-link">Manage Faculty</a>
+            <a href="students.html" class="dropdown-link">Manage Students</a>
+            <a href="courses.html" class="dropdown-link">Manage Courses</a>
+            <a href="course_faculty.html" class="dropdown-link">Course-Faculty Assignment</a>
+            <a href="enrollments.html" class="dropdown-link">Manage Enrollments</a>
+            <a href="grades.html" class="dropdown-link">Manage Grades</a>
+          </div>
         </div>
-        <!-- Back Button - Fixed path -->
-        <button onclick="window.location.href='../faculty dashbord.html'" 
-                class="bg-white text-gray-800 font-semibold px-4 py-2 rounded hover:bg-teal-100 transition">
-            Back to Dashboard
+        <button onclick="window.location.href='../faculty dashbord.html'" class="header-button">
+          Back to Dashboard
         </button>
-        <!-- Sign Out Button -->
-        <button onclick="window.location.href='../signin.html'" 
-                class="bg-white text-gray-800 font-semibold px-4 py-2 rounded hover:bg-teal-100 transition">
-            Sign Out
+        <button onclick="window.location.href='../signin.html'" class="header-button">
+          Sign Out
         </button>
-    </nav>
-</header>
+      </div>
+    </div>
+  </header>
 
-  <main class="flex-grow">
-    <h1 class="text-3xl font-bold text-center text-gray-800 mb-6">Courses Management</h1>
+  <!-- Main Content -->
+  <div class="container">
+    <div class="title-container">
+      <h1 class="page-title">Courses Management</h1>
+    </div>
 
-    <form id="courseForm" class="bg-white p-6 rounded-lg shadow-md max-w-md mx-auto mb-8">
-      <label for="name" class="block text-gray-700 font-semibold mb-2">Course Name *</label>
-      <input type="text" id="name" name="name" required 
-             class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-teal-500 mb-4" />
+    <form id="courseForm">
+      <label for="name">Course Name *</label>
+      <input type="text" id="name" name="name" required />
 
-      <button type="submit" 
-              class="w-full bg-teal-600 text-white font-semibold py-2 px-4 rounded hover:bg-teal-700 transition">
-        Add Course
-      </button>
+      <button type="submit">Add Course</button>
     </form>
 
-    <div class="text-center font-medium mb-6 text-lg" id="message"></div>
+    <div class="message" id="message"></div>
 
-    <h2 class="text-2xl font-semibold text-gray-800 mb-4 text-center">Courses List</h2>
-    <div class="overflow-x-auto max-w-3xl mx-auto">
-      <table id="coursesTable" class="w-full table-auto bg-white rounded-lg shadow-md">
-        <thead class="bg-teal-600 text-white">
-          <tr>
-            <th class="px-6 py-3 text-left">ID</th>
-            <th class="px-6 py-3 text-left">Name</th>
-          </tr>
-        </thead>
-        <tbody class="text-gray-800 divide-y divide-gray-200">
-          <!-- Rows will be added here dynamically -->
-        </tbody>
-      </table>
+    <h2>Courses List</h2>
+    <table id="coursesTable">
+      <thead>
+        <tr>
+          <th>ID</th><th>Name</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-links">
+        <a href="#" class="hover:text-teal-300 transition-all duration-300">Privacy Policy</a>
+        <a href="#" class="hover:text-teal-300 transition-all duration-300">Terms of Service</a>
+        <a href="contact.html" class="hover:text-teal-300 transition-all duration-300">Contact</a>
+      </div>
+      <div class="copyright">
+        © 2025 EnrollmentPRO
+      </div>
     </div>
-  </main>
+  </footer>
+
+  <script>
+    function toggleDropdown() {
+      document.getElementById('toolsDropdown').classList.toggle('show');
+    }
+
+    // Close dropdown when clicking outside
+    window.onclick = function(e) {
+      if (!e.target.matches('.header-button')) {
+        var dropdowns = document.getElementsByClassName("dropdown-content");
+        for (var i = 0; i < dropdowns.length; i++) {
+          var openDropdown = dropdowns[i];
+          if (openDropdown.classList.contains('show')) {
+            openDropdown.classList.remove('show');
+          }
+        }
+      }
+    }
+  </script>
 
   <script>
     const form = document.getElementById('courseForm');
@@ -120,43 +440,19 @@
         data.forEach(course => {
           const tr = document.createElement('tr');
           tr.innerHTML = `
-            <td class="px-6 py-3">${course.CourseID}</td>
-            <td class="px-6 py-3">${course.Name}</td>
+            <td>${course.CourseID}</td>
+            <td>${course.Name}</td>
           `;
           coursesTableBody.appendChild(tr);
         });
       })
       .catch(error => {
-        coursesTableBody.innerHTML = '<tr><td colspan="2" class="px-6 py-3 text-center text-red-500">Failed to load courses</td></tr>';
+        coursesTableBody.innerHTML = '<tr><td colspan="2">Failed to load courses</td></tr>';
       });
     }
 
     // Initial load
     loadCourses();
   </script>
-
-  <!-- Add this script before the closing body tag -->
-<script>
-function toggleDropdown() {
-    const dropdown = document.getElementById('toolsDropdown');
-    dropdown.classList.toggle('hidden');
-}
-
-// Close dropdown when clicking outside
-window.addEventListener('click', function(e) {
-    const dropdown = document.getElementById('toolsDropdown');
-    if (!e.target.matches('button')) {
-        if (!dropdown.classList.contains('hidden')) {
-            dropdown.classList.add('hidden');
-        }
-    }
-});
-</script>
-
-  <!-- Footer -->
-  <footer class="bg-gradient-to-r from-gray-800 to-teal-600 text-white text-center py-8 mt-8">
-    <strong>EnrollmentPRO</strong>
-  </footer>
-
 </body>
 </html>
