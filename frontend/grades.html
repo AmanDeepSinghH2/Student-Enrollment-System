@@ -336,6 +336,8 @@
                 <a href="#" class="footer-link">Privacy Policy</a>
                 <a href="#" class="footer-link">Terms of Service</a>
                 <a href="contact.html" class="footer-link">Contact</a>
+            </div>
+        </div>
     </footer>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
@@ -454,8 +456,7 @@
                     }
                 }
             }
-        // Initial load
-        loadStudents();
-        loadCourses();
-        loadGrades();
-    </script>    <script>        function toggleDropdown() {            document.getElementById("toolsDropdown").classList.toggle("show");        }        // Close the dropdown if the user clicks outside of it        window.onclick = function(event) {            if (!event.target.matches('.header-button')) {                var dropdowns = document.getElementsByClassName("dropdown-content");                for (var i = 0; i < dropdowns.length; i++) {                    var openDropdown = dropdowns[i];                    if (openDropdown.classList.contains('show')) {                        openDropdown.classList.remove('show');                    }                }            }        }    </script></body></html>
+        }
+    </script>
+</body>
+</html>
