@@ -4,7 +4,109 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Grades Management</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <style>
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            padding-top: 6rem;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+
+        .header {
+            background: linear-gradient(to right, #1e293b, #14b8a6);
+            padding: 1rem 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 50;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-title {
+            color: white;
+            font-size: 2.25rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-right: auto;
+        }
+
+        .header-title:hover {
+            color: #5eead4;
+            transform: scale(1.05);
+        }
+
+        .header-buttons {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .header-button {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 0.625rem 1.25rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            border: none;
+            cursor: pointer;
+        }
+
+        .header-button:hover {
+            background-color: white;
+            color: #1e293b;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .footer {
+            background: linear-gradient(to right, #1e293b, #14b8a6);
+            color: white;
+            padding: 2.5rem 0;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+            padding: 0 2rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-link {
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .footer-link:hover {
+            color: #5eead4;
+            transform: translateY(-2px);
+        }
+
         body { font-family: Arial, sans-serif; margin: 20px; }
         form { margin-bottom: 20px; }
         label { display: block; margin-top: 10px; }
@@ -13,51 +115,237 @@
         th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
         th { background-color: #f2f2f2; }
         .message { margin-top: 10px; }
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        .input-field {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.375rem;
+            margin-top: 0.25rem;
+        }
+        .input-field:focus {
+            outline: none;
+            border-color: #14b8a6;
+            box-shadow: 0 0 0 2px rgba(20, 184, 166, 0.2);
+        }
+
+        .page-title-container {
+            text-align: center;
+            padding: 2rem 0;
+            position: relative;
+            margin-bottom: 2rem;
+        }
+
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #1e293b;
+            display: inline-block;
+            padding-bottom: 0.5rem;
+            position: relative;
+        }
+
+        .page-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60%;
+            height: 3px;
+            background: linear-gradient(to right, #1e293b, #14b8a6);
+            border-radius: 2px;
+        }
+
+        .form-container {
+            max-width: 32rem;
+            margin: 0 auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        .table-container {
+            margin-top: 3rem;
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.5rem;
+            margin-top: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: #14b8a6;
+            box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.1);
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background-color: white;
+            min-width: 200px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            border-radius: 0.5rem;
+            z-index: 51;
+        }
+
+        .dropdown-content.show {
+            display: block;
+        }
+
+        .dropdown-link {
+            color: #1e293b;
+            padding: 0.75rem 1rem;
+            text-decoration: none;
+            display: block;
+            transition: all 0.3s ease;
+        }
+
+        .dropdown-link:hover {
+            background-color: #f8fafc;
+            color: #14b8a6;
+        }
     </style>
 </head>
-<body>
-    <h1>Grades Management</h1>
-    <form id="gradeForm">
-        <label for="studentID">Student *</label>
-        <select id="studentID" name="studentID" required>
-            <option value="">Select Student</option>
-        </select>
+<body class="bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen">
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <h1 class="header-title" onclick="window.location.href='../index.html'">
+                EnrollmentPRO
+            </h1>
+            <div class="header-buttons">
+                <div class="dropdown">
+                    <button onclick="toggleDropdown()" class="header-button">
+                        Tools
+                    </button>
+                    <div id="toolsDropdown" class="dropdown-content">
+                        <a href="faculty.html" class="dropdown-link">Manage Faculty</a>
+                        <a href="students.html" class="dropdown-link">Manage Students</a>
+                        <a href="courses.html" class="dropdown-link">Manage Courses</a>
+                        <a href="course_faculty.html" class="dropdown-link">Course-Faculty Assignment</a>
+                        <a href="enrollments.html" class="dropdown-link">Manage Enrollments</a>
+                        <a href="grades.html" class="dropdown-link">Manage Grades</a>
+                    </div>
+                </div>
+                <button onclick="window.location.href='../faculty dashbord.html'" class="header-button">
+                    Back to Dashboard
+                </button>
+                <button onclick="window.location.href='../signin.html'" class="header-button">
+                    Sign Out
+                </button>
+            </div>
+        </div>
+    </header>
 
-        <label for="courseID">Course *</label>
-        <select id="courseID" name="courseID" required>
-            <option value="">Select Course</option>
-        </select>
+    <div class="container mx-auto px-4">
+        <div class="page-title-container">
+            <h1 class="page-title">Grade Management</h1>
+        </div>
 
-        <label for="grade">Grade *</label>
-        <select id="grade" name="grade" required>
-            <option value="">Select Grade</option>
-            <option value="A+">A+</option>
-            <option value="A">A</option>
-            <option value="B+">B+</option>
-            <option value="B">B</option>
-            <option value="C+">C+</option>
-            <option value="C">C</option>
-            <option value="D">D</option>
-            <option value="F">F</option>
-        </select>
+        <div class="form-container">
+            <form id="gradeForm">
+                <div class="form-group">
+                    <label for="studentID" class="block text-gray-700 font-medium">Student *</label>
+                    <select id="studentID" name="studentID" required class="input-field">
+                        <option value="">Select Student</option>
+                    </select>
+                </div>
 
-        <label for="gradeDate">Grade Date</label>
-        <input type="date" id="gradeDate" name="gradeDate" />
+                <div class="form-group">
+                    <label for="courseID" class="block text-gray-700 font-medium">Course *</label>
+                    <select id="courseID" name="courseID" required class="input-field">
+                        <option value="">Select Course</option>
+                    </select>
+                </div>
 
-        <button type="submit">Add Grade</button>
-    </form>
+                <div class="form-group">
+                    <label for="grade" class="block text-gray-700 font-medium">Grade *</label>
+                    <select id="grade" name="grade" required class="input-field">
+                        <option value="">Select Grade</option>
+                        <option value="A+">A+</option>
+                        <option value="A">A</option>
+                        <option value="B+">B+</option>
+                        <option value="B">B</option>
+                        <option value="C+">C+</option>
+                        <option value="C">C</option>
+                        <option value="D">D</option>
+                        <option value="F">F</option>
+                    </select>
+                </div>
 
-    <div class="message" id="message"></div>
+                <div class="form-group">
+                    <label for="gradeDate" class="block text-gray-700 font-medium">Grade Date</label>
+                    <input type="date" id="gradeDate" name="gradeDate" class="input-field">
+                </div>
 
-    <h2>Grades List</h2>
-    <table id="gradesTable">
-        <thead>
-            <tr>
-                <th>ID</th><th>Student</th><th>Course</th><th>Grade</th><th>Grade Date</th>
-            </tr>
-        </thead>
-        <tbody></tbody>
-    </table>
+                <button type="submit" 
+                        class="w-full bg-teal-600 text-white py-2 px-4 rounded-md hover:bg-teal-700 transition-colors">
+                    Add Grade
+                </button>
+            </form>
+            <div id="message" class="mt-4 text-center font-medium"></div>
+        </div>
+
+        <div class="table-container">
+            <h2 class="text-2xl font-bold p-6 bg-gray-50 border-b border-gray-200">Grades List</h2>
+            <div class="overflow-x-auto">
+                <table id="gradesTable" class="w-full bg-white rounded-lg shadow-md">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Student</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Course</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Grade</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Grade Date</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="#" class="footer-link">Privacy Policy</a>
+                <a href="#" class="footer-link">Terms of Service</a>
+                <a href="contact.html" class="footer-link">Contact</a>
+    </footer>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            once: true,
+            offset: 100,
+            duration: 1000,
+        });
+    </script>
 
     <script>
         const form = document.getElementById('gradeForm');
@@ -130,17 +418,17 @@
                 data.forEach(grade => {
                     const tr = document.createElement('tr');
                     tr.innerHTML = `
-                        <td>${grade.GradeID}</td>
-                        <td>${grade.StudentName}</td>
-                        <td>${grade.CourseName}</td>
-                        <td>${grade.Grade}</td>
-                        <td>${grade.GradeDate || ''}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">${grade.GradeID}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">${grade.StudentName}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">${grade.CourseName}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">${grade.Grade}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">${grade.GradeDate || ''}</td>
                     `;
                     gradesTableBody.appendChild(tr);
                 });
             })
             .catch(error => {
-                gradesTableBody.innerHTML = '<tr><td colspan="5">Failed to load grades</td></tr>';
+                gradesTableBody.innerHTML = '<tr><td colspan="5" class="px-6 py-4 text-center text-red-500">Failed to load grades</td></tr>';
             });
         }
 
@@ -149,5 +437,25 @@
         loadCourses();
         loadGrades();
     </script>
-</body>
-</html>
+
+    <script>
+        function toggleDropdown() {
+            document.getElementById("toolsDropdown").classList.toggle("show");
+        }
+
+        // Close the dropdown if the user clicks outside of it
+        window.onclick = function(event) {
+            if (!event.target.matches('.header-button')) {
+                var dropdowns = document.getElementsByClassName("dropdown-content");
+                for (var i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
+                }
+            }
+        // Initial load
+        loadStudents();
+        loadCourses();
+        loadGrades();
+    </script>    <script>        function toggleDropdown() {            document.getElementById("toolsDropdown").classList.toggle("show");        }        // Close the dropdown if the user clicks outside of it        window.onclick = function(event) {            if (!event.target.matches('.header-button')) {                var dropdowns = document.getElementsByClassName("dropdown-content");                for (var i = 0; i < dropdowns.length; i++) {                    var openDropdown = dropdowns[i];                    if (openDropdown.classList.contains('show')) {                        openDropdown.classList.remove('show');                    }                }            }        }    </script></body></html>

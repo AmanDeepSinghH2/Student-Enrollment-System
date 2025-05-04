@@ -17,12 +17,35 @@
 
   <!-- Header -->
   <header class="bg-gradient-to-r from-gray-800 to-teal-600 text-white p-4 flex justify-between items-center shadow-md">
-    <h1 class="text-3xl font-bold cursor-pointer" onclick="window.location.href='index.html'">EnrollmentPRO</h1>
-    <nav class="space-x-4">
-      <button onclick="window.location.href='faculty_dashboard.html'" class="bg-white text-gray-800 font-semibold px-4 py-2 rounded hover:bg-teal-100 transition">Back</button>
-      <button onclick="window.location.href='info.html'" class="bg-white text-gray-800 font-semibold px-4 py-2 rounded hover:bg-teal-100 transition">Info</button>
+    <h1 class="text-3xl font-bold cursor-pointer" onclick="window.location.href='../index.html'">EnrollmentPRO</h1>
+    <nav class="flex items-center space-x-4">
+        <!-- Tools Dropdown -->
+        <div class="relative">
+            <button onclick="toggleDropdown()" 
+                    class="bg-white/10 text-white px-4 py-2 rounded hover:bg-white hover:text-gray-800 transition">
+                Tools
+            </button>
+            <div id="toolsDropdown" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50">
+                <a href="faculty.html" class="block px-4 py-2 text-gray-800 hover:bg-teal-50 hover:text-teal-600">Manage Faculty</a>
+                <a href="students.html" class="block px-4 py-2 text-gray-800 hover:bg-teal-50 hover:text-teal-600">Manage Students</a>
+                <a href="courses.html" class="block px-4 py-2 text-gray-800 hover:bg-teal-50 hover:text-teal-600">Manage Courses</a>
+                <a href="course_faculty.html" class="block px-4 py-2 text-gray-800 hover:bg-teal-50 hover:text-teal-600">Course-Faculty Assignment</a>
+                <a href="enrollments.html" class="block px-4 py-2 text-gray-800 hover:bg-teal-50 hover:text-teal-600">Manage Enrollments</a>
+                <a href="grades.html" class="block px-4 py-2 text-gray-800 hover:bg-teal-50 hover:text-teal-600">Manage Grades</a>
+            </div>
+        </div>
+        <!-- Back Button - Fixed path -->
+        <button onclick="window.location.href='../faculty dashbord.html'" 
+                class="bg-white text-gray-800 font-semibold px-4 py-2 rounded hover:bg-teal-100 transition">
+            Back to Dashboard
+        </button>
+        <!-- Sign Out Button -->
+        <button onclick="window.location.href='../signin.html'" 
+                class="bg-white text-gray-800 font-semibold px-4 py-2 rounded hover:bg-teal-100 transition">
+            Sign Out
+        </button>
     </nav>
-  </header>
+</header>
 
   <main class="flex-grow">
     <h1 class="text-3xl font-bold text-center text-gray-800 mb-6">Courses Management</h1>
@@ -111,6 +134,24 @@
     // Initial load
     loadCourses();
   </script>
+
+  <!-- Add this script before the closing body tag -->
+<script>
+function toggleDropdown() {
+    const dropdown = document.getElementById('toolsDropdown');
+    dropdown.classList.toggle('hidden');
+}
+
+// Close dropdown when clicking outside
+window.addEventListener('click', function(e) {
+    const dropdown = document.getElementById('toolsDropdown');
+    if (!e.target.matches('button')) {
+        if (!dropdown.classList.contains('hidden')) {
+            dropdown.classList.add('hidden');
+        }
+    }
+});
+</script>
 
   <!-- Footer -->
   <footer class="bg-gradient-to-r from-gray-800 to-teal-600 text-white text-center py-8 mt-8">

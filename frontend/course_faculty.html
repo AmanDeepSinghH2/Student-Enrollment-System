@@ -5,39 +5,229 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Course-Faculty Management</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            padding-top: 6rem;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+
+        .header {
+            background: linear-gradient(to right, #1e293b, #14b8a6);
+            padding: 1.5rem 2rem;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 50;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-title {
+            color: white;
+            font-size: 2.25rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .header-title:hover {
+            color: #5eead4;
+            transform: scale(1.05);
+        }
+
+        .header-buttons {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .header-button {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .header-button:hover {
+            background-color: white;
+            color: #1e293b;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .footer {
+            background: linear-gradient(to right, #1e293b, #14b8a6);
+            color: white;
+            padding: 2.5rem 0;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+            padding: 0 2rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-link {
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .footer-link:hover {
+            color: #5eead4;
+            transform: translateY(-2px);
+        }
+
+        .copyright {
+            font-size: 0.875rem;
+            opacity: 0.8;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background-color: white;
+            min-width: 200px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            border-radius: 0.5rem;
+            z-index: 51;
+        }
+
+        .dropdown-content.show {
+            display: block;
+        }
+
+        .dropdown-link {
+            color: #1e293b;
+            padding: 0.75rem 1rem;
+            text-decoration: none;
+            display: block;
+            transition: all 0.3s ease;
+        }
+
+        .dropdown-link:hover {
+            background-color: #f8fafc;
+            color: #14b8a6;
+        }
+    </style>
 </head>
-<body class="bg-gradient-to-b from-gray-200 to-gray-400 min-h-screen p-6 font-sans">
-    <button onclick="window.location.href='../faculty dashbord.html'" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded mb-4">Back</button>
-    <h1 class="text-3xl font-bold mb-6 text-center text-gray-800">Course-Faculty Management</h1>
-    <form id="mappingForm" class="max-w-md mx-auto bg-white p-6 rounded-lg shadow-md">
-        <label for="courseID" class="block mb-2 font-semibold text-gray-700">Course *</label>
-        <select id="courseID" name="courseID" required class="w-full p-2 border border-gray-300 rounded mb-4">
-            <option value="">Select Course</option>
-        </select>
+<body class="bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen">
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <h1 class="header-title" onclick="window.location.href='../index.html'">EnrollmentPRO</h1>
+            <div class="header-buttons">
+                <div class="dropdown">
+                    <button onclick="toggleDropdown()" class="header-button">
+                        Tools
+                    </button>
+                    <div id="toolsDropdown" class="dropdown-content">
+                        <a href="faculty.html" class="dropdown-link">Manage Faculty</a>
+                        <a href="students.html" class="dropdown-link">Manage Students</a>
+                        <a href="courses.html" class="dropdown-link">Manage Courses</a>
+                        <a href="course_faculty.html" class="dropdown-link">Course-Faculty Assignment</a>
+                        <a href="enrollments.html" class="dropdown-link">Manage Enrollments</a>
+                        <a href="grades.html" class="dropdown-link">Manage Grades</a>
+                    </div>
+                </div>
+                <button onclick="window.location.href='../faculty dashbord.html'" class="header-button">
+                    Back to Dashboard
+                </button>
+                <button onclick="window.location.href='../signin.html'" class="header-button">
+                    Sign Out
+                </button>
+            </div>
+        </div>
+    </header>
 
-        <label for="facultyID" class="block mb-2 font-semibold text-gray-700">Faculty *</label>
-        <select id="facultyID" name="facultyID" required class="w-full p-2 border border-gray-300 rounded mb-4">
-            <option value="">Select Faculty</option>
-        </select>
+    <!-- Main Content -->
+    <main class="p-6">
+        <div class="max-w-4xl mx-auto">
+            <h1 class="text-3xl font-bold mb-8 text-center text-gray-800">Course-Faculty Management</h1>
+            <form id="mappingForm" class="max-w-md mx-auto bg-white p-6 rounded-lg shadow-md">
+                <label for="courseID" class="block mb-2 font-semibold text-gray-700">Course *</label>
+                <select id="courseID" name="courseID" required class="w-full p-2 border border-gray-300 rounded mb-4">
+                    <option value="">Select Course</option>
+                </select>
 
-        <button type="submit" class="w-full bg-teal-600 text-white font-semibold py-2 rounded hover:bg-teal-700 transition">Add Mapping</button>
-    </form>
+                <label for="facultyID" class="block mb-2 font-semibold text-gray-700">Faculty *</label>
+                <select id="facultyID" name="facultyID" required class="w-full p-2 border border-gray-300 rounded mb-4">
+                    <option value="">Select Faculty</option>
+                </select>
 
-    <div id="message" class="text-center font-semibold mt-4"></div>
+                <button type="submit" class="w-full bg-teal-600 text-white font-semibold py-2 rounded hover:bg-teal-700 transition">Add Mapping</button>
+            </form>
 
-    <h2 class="text-2xl font-semibold text-gray-800 mt-10 mb-4 text-center">Course-Faculty Mappings</h2>
-    <div class="overflow-x-auto max-w-4xl mx-auto">
-        <table id="mappingsTable" class="w-full border-collapse border border-gray-300 rounded-lg shadow-md">
-            <thead class="bg-teal-600 text-white">
-                <tr>
-                    <th class="border border-gray-300 px-4 py-2 text-left">ID</th>
-                    <th class="border border-gray-300 px-4 py-2 text-left">Course</th>
-                    <th class="border border-gray-300 px-4 py-2 text-left">Faculty</th>
-                </tr>
-            </thead>
-            <tbody class="text-gray-800 divide-y divide-gray-200"></tbody>
-        </table>
-    </div>
+            <div id="message" class="text-center font-semibold mt-4"></div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-10 mb-4 text-center">Course-Faculty Mappings</h2>
+            <div class="overflow-x-auto max-w-4xl mx-auto">
+                <table id="mappingsTable" class="w-full border-collapse border border-gray-300 rounded-lg shadow-md">
+                    <thead class="bg-teal-600 text-white">
+                        <tr>
+                            <th class="border border-gray-300 px-4 py-2 text-left">ID</th>
+                            <th class="border border-gray-300 px-4 py-2 text-left">Course</th>
+                            <th class="border border-gray-300 px-4 py-2 text-left">Faculty</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-800 divide-y divide-gray-200"></tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="#" class="footer-link">Privacy Policy</a>
+                <a href="#" class="footer-link">Terms of Service</a>
+                <a href="contact.html" class="footer-link">Contact</a>
+            </div>
+            <div class="copyright">
+                © 2025 EnrollmentPRO
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            once: true,
+            offset: 100,
+            duration: 1000,
+        });
+    </script>
 
     <script>
         const form = document.getElementById('mappingForm');
@@ -120,6 +310,23 @@
             .catch(error => {
                 mappingsTableBody.innerHTML = '<tr><td colspan="3">Failed to load mappings</td></tr>';
             });
+        }
+
+        function toggleDropdown() {
+            document.getElementById('toolsDropdown').classList.toggle('show');
+            event.stopPropagation();
+        }
+
+        window.onclick = function(event) {
+            if (!event.target.matches('.header-button')) {
+                var dropdowns = document.getElementsByClassName("dropdown-content");
+                for (var i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
+                }
+            }
         }
 
         // Initial load
