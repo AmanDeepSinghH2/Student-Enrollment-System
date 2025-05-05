@@ -82,13 +82,14 @@
    </h1>
    <section class="grid grid-cols-1 sm:grid-cols-3 gap-8">
     <div class="bg-[#14b8a6]/70 border border-[black] rounded-md p-6 flex flex-col items-center text-black">
-     <img alt="Profile picture of faculty, placeholder image with abstract colorful background" class="w-24 h-24 rounded-full mb-4 shadow-[0_0_10px_#d600ff]" height="96" src="https://storage.googleapis.com/a1aa/image/979f6909-b3e6-4e33-0841-dda91bdf0297.jpg" width="96"/>
-     <h2 id="facultyName" class="font-extrabold text-lg mb-1"></h2>
-     <p id="facultyID" class="text-sm text-[#ff1a66] mb-2 select-text"></p>
-     <p class="text-sm text-center">
-      Associate Professor, Computer Science
-     </p>
-    </div>
+      <img alt="Profile picture of faculty, placeholder image with abstract colorful background" class="w-24 h-24 rounded-full mb-4 shadow-[0_0_10px_#d600ff]" height="96" src="https://storage.googleapis.com/a1aa/image/979f6909-b3e6-4e33-0841-dda91bdf0297.jpg" width="96"/>
+      <h2 id="facultyName" class="font-extrabold text-lg mb-1"></h2>
+      <p id="facultyID" class="text-sm text-[#ff1a66] mb-2 select-text"></p>
+      <div class="flex flex-col gap-2">
+        <p>Name :</p>
+        <p class="text-sm">Associate Professor, Computer Science</p>
+      </div>
+</div>
 
     <div class="bg-[#14b8a6]/70 border border-[black] rounded-md p-6 text-black flex flex-col">
       <h2 class="font-extrabold text-lg mb-4 text-[#ff1a66] select-none">
@@ -99,14 +100,12 @@
     </div>
 
     <div class="bg-[#14b8a6]/70 border border-[black] rounded-md p-6 text-black flex flex-col">
-      <label class="font-extrabold text-[#ff1a66] mb-2 select-none" for="selectClass">
-        Select Class for Enrollments
-      </label>
-      <select id="selectClass" class="bg-[bg-white] bg-opacity-80 rounded-md px-4 py-2 font-semibold text-black shadow-[black] focus:outline-none focus:ring-2 focus:ring-[black]" name="selectClass" aria-label="Select class for enrollments">
-        <option value="" disabled selected>
-          Choose a class
-        </option>
-      </select>
+      <h2 class="font-extrabold text-[#ff1a66] mb-2 select-none">
+        Assign Class
+      </h2>
+      <div class="bg-[white] bg-opacity-80 rounded-md px-4 py-2 font-semibold text-black shadow-[black]">
+        class :
+      </div>
     </div>
    </section>
    <section class="mt-10 flex justify-center">
